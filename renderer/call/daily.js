@@ -36,7 +36,6 @@ registerBlurBtnListener(toggleBlur);
 async function initAndJoin(roomURL, name) {
   callObject = DailyIframe.createCallObject({
     dailyConfig: {
-      experimentalChromeVideoMuteLightOff: true,
       avoidEval: true,
     },
   })
@@ -49,6 +48,17 @@ async function initAndJoin(roomURL, name) {
     .on('participant-left', handleParticipantLeft)
     .on('active-speaker-change', handleActiveSpeakerChange)
     .on('input-settings-updated', handleInputSettingsChange);
+
+  window.callObject = callObject;
+
+  callObject.updateInputSettings({
+    audio: {
+      processor: { type: 'noise-cancellation' },
+      settings: {
+        deviceId: 'default',
+      },
+    },
+  });
 
   return callObject
     .join({ url: roomURL, userName: name })
