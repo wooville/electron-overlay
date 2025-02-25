@@ -36,8 +36,16 @@ registerBlurBtnListener(toggleBlur);
 async function initAndJoin(roomURL, name) {
   callObject = DailyIframe.createCallObject({
     dailyConfig: {
-      experimentalChromeVideoMuteLightOff: true,
       avoidEval: true,
+    },
+    inputSettings: {
+      audio: {
+        settings: {
+          // oddly, in electron, this seems to make echo cancellation work :confused:
+          echoCancellation: false,
+        },
+        processor: { type: 'noise-cancellation' },
+      },
     },
   })
     .on('camera-error', handleCameraError)
