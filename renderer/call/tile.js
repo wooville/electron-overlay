@@ -1,6 +1,7 @@
 // tile.js handles all participant tiles.
 
 import setupDraggableElement from './drag.js';
+import setupParticipantCursor from '../lines/lines.js'
 
 // addOrUpdateTile adds a tile for a participant, or updates a tile
 // if it already exists.
@@ -51,7 +52,7 @@ export function addOrUpdateTile(
   setIconVisibility(camOffDiv, videoTag);
   camOffDiv.classList.add('clickable');
   camOffDiv.classList.add('draggable');
-  setupDraggableElement(camOffDiv);
+  // setupDraggableElement(camOffDiv);
 
   const micOffDiv = participant.querySelector('#mic-off');
   setIconVisibility(micOffDiv, audioTag);
@@ -133,6 +134,7 @@ function addTile(id, userName) {
   const tiles = document.getElementById('tiles');
   tiles.appendChild(participant);
   setupDraggableElement(participant);
+  setupParticipantCursor(participant);
   return { participant, video, audio };
 }
 

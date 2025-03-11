@@ -52,6 +52,14 @@ export function updateCallControls(inCall) {
   const controls = document.getElementById('callControls');
   const on = 'controls-on';
 
+  // var line = new LeaderLine(
+  //   document.getElementById('testbox'),
+  //   document.getElementById('testbox2')
+  // );
+  // line.color = 'red'; // Change the color to red.
+  // line.size = 8; // Up size.
+  // console.log(line.size); // Output current size.
+
   // If the user has joined a call, remove the call entry form
   // and display the call controls. Otherwise, do the opposite.
   if (inCall) {
@@ -129,3 +137,5 @@ function updateClipboardBtnClick(callURL) {
       });
   };
 }
+
+

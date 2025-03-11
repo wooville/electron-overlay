@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const {
   app,
+  screen,
   BrowserWindow,
   ipcMain,
   Tray,
@@ -15,9 +16,17 @@ const positioner = require('electron-traywindow-positioner');
 
 const devMode = app.commandLine.hasSwitch('dev');
 
+// const ll = require('leader-line');
+
 let callWindow = null;
 let trayWindow = null;
 let tray = null;
+let mousePos = null;
+
+// app.on('ready', () => {
+//   let mousePos = screen.getCursorScreenPoint();
+//   console.log(mousePos);
+// });
 
 function createTrayWindow() {
   // Create the window that opens on app start
@@ -60,17 +69,18 @@ function createTrayWindow() {
 function createCallWindow() {
   // Create the browser window.
   callWindow = new BrowserWindow({
-    title: 'Daily',
+    title: 'Shared Overlay',
     webPreferences: {
       preload: path.join(__dirname, 'preloadCall.js'),
     },
+    fullscreen: true,
     frame: false,
     autoHideMenuBar: true,
     transparent: true,
-    skipTaskbar: true,
+    // skipTaskbar: true,
     hasShadow: false,
     // Don't show the window until the user is in a call.
-    show: false,
+    // show: false,
   });
 
   preventRefresh(callWindow);
@@ -92,8 +102,21 @@ function createCallWindow() {
 
   callWindow.setAlwaysOnTop(true, level);
 
+  callWindow.on('focus', () => {
+    callWindow.title = 'focused';
+    mousePos = screen.getCursorScreenPoint();
+    // console.log(mousePos);
+    callWindow.transparent = false;
+  });
+
+  callWindow.on('blur', () => {
+    callWindow.title = 'out';
+    callWindow.transparent = true;
+  });
+
   // and load the index.html of the app.
   callWindow.loadFile('index.html');
+
 }
 
 // This method will be called when Electron has finished
@@ -170,9 +193,9 @@ function setupTrayMenu(inCall) {
 // accidentally drop out of the call.
 function preventRefresh(window) {
   window.on('focus', () => {
-    globalShortcut.register('CommandOrControl+R', () => {});
-    globalShortcut.register('CommandOrControl+Shift+R', () => {});
-    globalShortcut.register('F5', () => {});
+    globalShortcut.register('CommandOrControl+R', () => { });
+    globalShortcut.register('CommandOrControl+Shift+R', () => { });
+    globalShortcut.register('F5', () => { });
   });
   window.on('blur', () => {
     globalShortcut.unregisterAll(window);
