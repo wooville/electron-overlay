@@ -43,7 +43,7 @@ function createTrayWindow() {
     autoHideMenuBar: true,
     setVisibleOnAllWorkspaces: true,
     transparent: true,
-    skipTaskbar: true,
+    // skipTaskbar: true,
     hasShadow: false,
   });
 
@@ -51,10 +51,10 @@ function createTrayWindow() {
 
   trayWindow.loadFile('tray.html');
   trayWindow.on('blur', () => {
-    trayWindow.hide();
+    // trayWindow.hide();
   });
   trayWindow.on('show', () => {
-    positioner.position(trayWindow, tray.getBounds());
+    // positioner.position(trayWindow, tray.getBounds());
     trayWindow.focus();
   });
   trayWindow.webContents.once('dom-ready', () => {
@@ -104,14 +104,16 @@ function createCallWindow() {
 
   callWindow.on('focus', () => {
     callWindow.title = 'focused';
-    mousePos = screen.getCursorScreenPoint();
+    // mousePos = screen.getCursorScreenPoint();
     // console.log(mousePos);
-    callWindow.transparent = false;
+    // callWindow.transparent = false;
+    // callWindow.setAlwaysOnTop(true, level);
   });
 
   callWindow.on('blur', () => {
-    callWindow.title = 'out';
-    callWindow.transparent = true;
+    callWindow.title = 'blurred';
+    // callWindow.transparent = true;
+    // callWindow.setAlwaysOnTop(false, level);
   });
 
   // and load the index.html of the app.

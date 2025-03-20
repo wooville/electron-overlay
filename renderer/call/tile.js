@@ -1,7 +1,7 @@
 // tile.js handles all participant tiles.
 
 import setupDraggableElement from './drag.js';
-import setupParticipantCursor from '../lines/lines.js'
+import setupParticipantCursor from '../space/lines.js'
 
 // addOrUpdateTile adds a tile for a participant, or updates a tile
 // if it already exists.
@@ -38,6 +38,7 @@ export function addOrUpdateTile(
     audioTag = tags.audio;
     if (isLocal) {
       audioTag.volume = 0;
+      setupParticipantCursor(participant);
     }
   }
 
@@ -134,7 +135,8 @@ function addTile(id, userName) {
   const tiles = document.getElementById('tiles');
   tiles.appendChild(participant);
   setupDraggableElement(participant);
-  setupParticipantCursor(participant);
+  // draggable.snap = { y: 200 * id };
+
   return { participant, video, audio };
 }
 

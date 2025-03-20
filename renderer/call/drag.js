@@ -7,6 +7,7 @@ let newID = null;
 export default function setupDraggableElement(element) {
   let draggable = new PlainDraggable(element);
   draggable.containment = wrapper;
+  draggable.snap = { step: 40 };
   return draggable;
 }
 

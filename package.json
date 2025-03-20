@@ -9,7 +9,7 @@
     "lint": "eslint ./",
     "lintFix": "eslint ./ --fix"
   },
-  "repository": "https://github.com/daily-demos/electron-overlay",
+  "repository": "https://github.com/wooville/electron-overlay",
   "keywords": [
     "Electron",
     "Daily",
@@ -17,7 +17,7 @@
     "WebRTC",
     "demo"
   ],
-  "author": "Liza Shulyayeva",
+  "author": "Julian Woo",
   "license": "CC0-1.0",
   "dependencies": {
     "@daily-co/daily-js": "^0.43.0",

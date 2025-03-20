@@ -13,7 +13,12 @@
 
 <body>
   <div id="wrapper">
-    <div id="callControls" class="clickable" draggable="true">
+
+    <div id="roomLayer0" class="roomLayer roomLayer-on">
+
+    </div>
+
+    <div id="callControls" class="controls clickable" draggable="true">
       <div id="controller">
         <div id="dots"></div>
         <div id="line"></div>
@@ -24,6 +29,22 @@
       <span id="clipboardTooltip">Room URL copied</span>
       <button id="toggleBlur" class="blur-off">BLUR</button>
       <button id="leave">Leave Call</button>
+    </div>
+
+    <div id="roomControls" class="controls clickable controls-on" draggable="true">
+      <div id="controller">
+        <div id="dots"></div>
+        <div id="line"></div>
+      </div>
+      <button id="toggleRoom" class="clickable">ROOM</button>
+      <!-- <button id="toggleLive"></button> -->
+    </div>
+
+    <div id="avatarControls" class="controls clickable controls-on" draggable="true">
+      <div id="controller">
+        <div id="dots"></div>
+        <div id="line"></div>
+      </div>
     </div>
 
     <div id="cursorIcon"></div>
@@ -40,7 +61,8 @@
   <script src="./plain-draggable.min.js"></script>
   <script src="./leader-line.min.js"></script>
   <script src="./renderer/call/daily.js" type="module"></script>
-  <script src="./renderer/lines/lines.js" type="module"></script>
+  <script src="./renderer/space/room.js" type="module"></script>
+  <!-- <script src="./renderer/space/lines.js" type="module"></script> -->
 </body>
 
 </html>

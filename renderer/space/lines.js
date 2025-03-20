@@ -13,6 +13,10 @@ export default function setupParticipantCursor(participant) {
         line.position();
     })
 
+    // wrapper.addEventListener('left-meeting', () => {
+    //     line.remove();
+    // })
+
     line.positionByWindowResize = false;
 
     return line;

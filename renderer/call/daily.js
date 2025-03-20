@@ -17,6 +17,9 @@ import {
   removeTile,
   updateActiveSpeaker,
 } from './tile.js';
+import {
+  specialUserName
+} from '../space/room.js'
 // import {
 //   drawLine
 // } from '../lines/lines.js';
@@ -28,6 +31,7 @@ const localState = {
   video: null,
   blur: false,
 };
+// const localUserName = 'You';
 
 registerJoinListener(initAndJoin);
 registerLeaveBtnListener(leave);
@@ -107,6 +111,7 @@ function handleJoinedMeeting(event) {
   updateCallControls(true);
   const p = event.participants.local;
   updateLocal(p);
+
 }
 
 function handleLeftMeeting() {
@@ -167,5 +172,5 @@ function updateLocal(p) {
     updateCamBtn(localState.video);
   }
   const tracks = getParticipantTracks(p);
-  addOrUpdateTile(p.session_id, 'You', tracks.video, tracks.audio, true);
+  addOrUpdateTile(specialUserName, specialUserName, tracks.video, tracks.audio, true);
 }
