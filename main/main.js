@@ -2,13 +2,17 @@
 const {
   app,
   screen,
+  remote,
+  BaseWindow,
   BrowserWindow,
+  WebContentsView,
   ipcMain,
   Tray,
   Menu,
   MenuItem,
   shell,
   globalShortcut,
+  webContents,
 } = require('electron');
 
 const path = require('path');
@@ -18,8 +22,10 @@ const devMode = app.commandLine.hasSwitch('dev');
 
 // const ll = require('leader-line');
 
-let callWindow = null;
+let roomWindow = null;
 let trayWindow = null;
+let roomView = null;
+let trayView = null;
 let tray = null;
 let mousePos = null;
 
@@ -31,14 +37,15 @@ let mousePos = null;
 function createTrayWindow() {
   // Create the window that opens on app start
   // and tray click
-  trayWindow = new BrowserWindow({
-    title: 'Daily',
-    webPreferences: {
-      preload: path.join(__dirname, 'preloadTray.js'),
-    },
+  trayWindow = new BaseWindow({
+    parent: roomWindow,
+    title: 'Call Window',
+    // webPreferences: {
+    //   preload: path.join(__dirname, 'preloadTray.js'),
+    // },
     width: 290,
     height: 300,
-    show: false,
+    // show: false,
     frame: false,
     autoHideMenuBar: true,
     setVisibleOnAllWorkspaces: true,
@@ -49,7 +56,15 @@ function createTrayWindow() {
 
   preventRefresh(trayWindow);
 
-  trayWindow.loadFile('tray.html');
+  trayView = new WebContentsView({
+    webPreferences: {
+      preload: path.join(__dirname, 'preloadTray.js'),
+    }
+  });
+  trayView.webContents.loadFile('tray.html');
+  trayView.setBounds({ x: 0, y: 0, width: 290, height: 300 })
+  trayWindow.contentView.addChildView(trayView);
+
   trayWindow.on('blur', () => {
     // trayWindow.hide();
   });
@@ -57,22 +72,25 @@ function createTrayWindow() {
     // positioner.position(trayWindow, tray.getBounds());
     trayWindow.focus();
   });
-  trayWindow.webContents.once('dom-ready', () => {
+  trayView.webContents.once('dom-ready', () => {
     trayWindow.show();
   });
-  trayWindow.webContents.on('new-window', (e, url) => {
+  trayView.webContents.on('new-window', (e, url) => {
     e.preventDefault();
     shell.openExternal(url);
   });
+
+  trayWindow.on('closed', () => {
+    trayView.webContents.close()
+  })
 }
 
-function createCallWindow() {
+function createRoomWindow() {
   // Create the browser window.
-  callWindow = new BrowserWindow({
+  roomWindow = new BaseWindow({
     title: 'Shared Overlay',
-    webPreferences: {
-      preload: path.join(__dirname, 'preloadCall.js'),
-    },
+    width: 800,
+    height: 400,
     fullscreen: true,
     frame: false,
     autoHideMenuBar: true,
@@ -82,16 +100,46 @@ function createCallWindow() {
     // Don't show the window until the user is in a call.
     // show: false,
   });
+  // roomWindow = new BaseWindow({ width: 800, height: 400 })
 
-  preventRefresh(callWindow);
+  preventRefresh(roomWindow);
+
+  // and load the index.html of the app.
+  roomView = new WebContentsView({
+    webPreferences: {
+      preload: path.join(__dirname, 'preloadCall.js'),
+    }
+  });
+  roomView.setBackgroundColor("#0FFF") // hex ARGB transparent background
+  console.log(roomWindow.getBounds().width)
+  roomView.webContents.loadFile('index.html');
+  roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height })
+  roomWindow.contentView.addChildView(roomView);
+
+  roomWindow.on('will-resize', (e, newBounds, details) => {
+    roomView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+  })
+  roomWindow.on('resize', () => {
+    roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
+  })
+  roomWindow.on('enter-fullscreen', () => {
+    roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
+  })
+  roomWindow.on('exit-fullscreen', () => {
+    roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
+  })
+  roomWindow.on('closed', () => {
+    roomView.webContents.close()
+    trayView.webContents.close()
+  })
 
   if (devMode) {
-    callWindow.show();
-    callWindow.openDevTools();
+    roomWindow.show();
+    roomView.webContents.openDevTools();
   } else {
-    callWindow.setIgnoreMouseEvents(true, { forward: true });
+    roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }
-  callWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   let level = 'normal';
   // Mac OS requires a different level for our drag/drop and overlay
@@ -100,32 +148,39 @@ function createCallWindow() {
     level = 'floating';
   }
 
-  callWindow.setAlwaysOnTop(true, level);
+  roomWindow.setAlwaysOnTop(true, level);
 
-  callWindow.on('focus', () => {
-    callWindow.title = 'focused';
+  roomWindow.on('focus', () => {
+    roomWindow.title = 'focused';
     // mousePos = screen.getCursorScreenPoint();
     // console.log(mousePos);
-    // callWindow.transparent = false;
-    // callWindow.setAlwaysOnTop(true, level);
+    // roomWindow.transparent = false;
+    // roomWindow.setAlwaysOnTop(true, level);
   });
 
-  callWindow.on('blur', () => {
-    callWindow.title = 'blurred';
-    // callWindow.transparent = true;
-    // callWindow.setAlwaysOnTop(false, level);
+  roomWindow.on('blur', () => {
+    roomWindow.title = 'blurred';
+    // roomWindow.transparent = true;
+    // roomWindow.setAlwaysOnTop(false, level);
   });
 
-  // and load the index.html of the app.
-  callWindow.loadFile('index.html');
+  // const view1 = new WebContentsView()
+  // roomWindow.contentView.addChildView(view1)
+  // view1.webContents.loadURL('https://electronjs.org')
+  // view1.setBounds({ x: 0, y: 0, width: 400, height: 400 })
 
+  // const view2 = new WebContentsView()
+  // roomWindow.contentView.addChildView(view2)
+  // view2.webContents.loadURL('https://github.com/electron/electron')
+  // view2.setBounds({ x: 400, y: 0, width: 400, height: 400 })
+  // view1.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createCallWindow();
+  createRoomWindow();
   createTrayWindow();
   setupTray();
 });
@@ -173,7 +228,7 @@ function setupTrayMenu(inCall) {
       label: 'Leave Call',
       type: 'normal',
       click() {
-        callWindow.webContents.send('leave-call');
+        roomView.webContents.send('leave-call');
       },
     });
     menuItems.push(item);
@@ -210,7 +265,7 @@ function preventRefresh(window) {
 // this handler will send the room URL and the user's chosen
 // name to the call window.
 ipcMain.handle('join-call', (e, url, name) => {
-  callWindow.webContents.send('join-call', { url, name });
+  roomView.webContents.send('join-call', { url, name });
 });
 
 // When we get a success or failure status from the call
@@ -219,14 +274,14 @@ ipcMain.handle('join-call', (e, url, name) => {
 // maximize and focus the call window.
 ipcMain.handle('call-join-update', (e, joined) => {
   if (!joined) {
-    trayWindow.webContents.send('join-failure');
+    trayView.webContents.send('join-failure');
     trayWindow.show();
     return;
   }
-  callWindow.maximize();
+  roomWindow.maximize();
   setupTrayMenu(true);
-  callWindow.show();
-  callWindow.focus();
+  roomWindow.show();
+  roomWindow.focus();
 });
 
 // When a user leaves a call, this handler will update
@@ -235,16 +290,16 @@ ipcMain.handle('call-join-update', (e, joined) => {
 // join form once more)
 ipcMain.handle('left-call', () => {
   setupTrayMenu(false);
-  trayWindow.webContents.send('left-call');
-  callWindow.hide();
+  trayView.webContents.send('left-call');
+  roomWindow.hide();
 });
 
 // This handler updates our mouse event settings depending
 // on whether the user is hovering over a clickable element
 // in the call window.
 ipcMain.handle('set-ignore-mouse-events', (e, ...args) => {
-  const win = BrowserWindow.fromWebContents(e.sender);
-  win.setIgnoreMouseEvents(...args);
+  // const win = BrowserWindow.fromWebContents(e.sender);
+  roomWindow.setIgnoreMouseEvents(...args);
 });
 
 ipcMain.handle('close-app', () => {
