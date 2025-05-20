@@ -1,59 +1,49 @@
-// drag.js sets up draggable elements in our wrapper.
+document.addEventListener('dragover', event => event.preventDefault())
+document.addEventListener('drop', event => event.preventDefault())
 
 const wrapper = document.getElementById('wrapper');
-let oldID = null;
-let newID = null;
+var dragged = null; //The note currently dragged
+var offset = {x: 0, y: 0}; //Offset from mouse when dragging
+var prevDimensions = {width: 0, height: 0};
+// On a mouse-down event, check if the target is a note, if so store it and its offset from the mouse.
+wrapper.addEventListener("mousedown", function(e) {
+  var target = e.target.closest(".draggable");
+//   console.log("test");
+  if (target===null || e.target.closest(".undraggable")) return;
+//     if (edited) return; // If we are editing, we want to disable dragging.
 
-export default function setupDraggableElement(element) {
-  let draggable = new PlainDraggable(element);
-  draggable.containment = wrapper;
-  draggable.snap = { step: 40 };
-  return draggable;
-}
+  dragged = target;
+  var style = getComputedStyle(dragged);
+  
+  offset.x = e.clientX - parseInt(style.getPropertyValue("left"));
+  offset.y = e.clientY - parseInt(style.getPropertyValue("top"));
+  prevDimensions.width = parseInt(style.getPropertyValue("width"));
+  prevDimensions.height = parseInt(style.getPropertyValue("height"));
+});
 
-// setupDraggableElement will ensure the wrapper is set up to allow drops,
-// and add a listener to the given element to detect a drag being started.
-// export default function setupDraggableElement(element) {
-//   const dropSetupAttr = 'dropSetupDone';
-//   if (!wrapper.getAttribute(dropSetupAttr)) {
-//     wrapper.addEventListener('drop', drop);
-//     wrapper.addEventListener('dragover', allowDrop);
-//     wrapper.setAttribute(dropSetupAttr, true);
-//   }
-//   element.addEventListener('dragstart', drag);
-// }
+// On a mouse-move event, check if something is dragged, if so position it relative to the stored offset.
+wrapper.addEventListener("mousemove", function(e) {
+  if (dragged === null) return;
 
-// drop handles an element being dropped in another position on the wrapper
-function drop(ev) {
-  ev.preventDefault();
-  const dt = ev.dataTransfer;
-  const data = dt.getData('targetID');
-  const relativeMouseX = parseInt(dt.getData('relativeMouseX'), 10);
-  const relativeMouseY = parseInt(dt.getData('relativeMouseY'), 10);
+  var style = getComputedStyle(dragged);
+  if (prevDimensions.width != parseInt(style.getPropertyValue("width"))) return;
+  if (prevDimensions.height != parseInt(style.getPropertyValue("height"))) return;
+//     if (edited) return;
+  var left = e.clientX - offset.x;
+  var top = e.clientY - offset.y;
+//   var zIndex = 998;
+  dragged.style.left = left+"px";
+  dragged.style.top = top+"px";
+//   dragged.style.zIndex = zIndex+"px";
+//     dragged.setAttribute("style", "z-index:"+zIndex+";"+"left: "+left+"px; top:"+top+"px;");
+});
 
-  // Offset the new position based on the relative position of the mouse
-  // which we saved on drag start.
-  const newTop = ev.clientY - relativeMouseY;
-  const newLeft = ev.clientX - relativeMouseX;
+wrapper.addEventListener("mouseup", function(e) {
+  if (dragged === null) return;
+  dragged = null;
+});
 
-  const ele = document.getElementById(data);
-  ele.style.top = `${newTop}px`;
-  ele.style.left = `${newLeft}px`;
-  ele.style.position = 'absolute';
-}
-
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev) {
-  const { target } = ev;
-  ev.dataTransfer.setData('targetID', target.id);
-  // oldID = target.id;
-
-  // Save the relative position of the mouse in relation to the element, to make sure
-  // we drop it with the right offset at the end.
-  const rect = target.getBoundingClientRect();
-  ev.dataTransfer.setData('relativeMouseX', ev.clientX - rect.left);
-  ev.dataTransfer.setData('relativeMouseY', ev.clientY - rect.top);
-}
+wrapper.addEventListener("mouseleave", function(e) {
+  if (dragged === null) return;
+  dragged = null;
+});

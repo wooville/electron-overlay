@@ -16,6 +16,13 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
+  user-select: none;
+}
+
+#webstrates {
+  height: 100%;
+  width: 100%;
+  /* z-index: -1; */
 }
 
 .roomLayer {
@@ -45,8 +52,10 @@ body {
   font-size: 10px;
 }
 
-[draggable] {
+#wrapper .draggable {
   cursor: grab;
+  resize:both;
+  overflow: hidden;
 }
 
 #cursorIcon {
@@ -60,22 +69,27 @@ body {
   /* visibility: hidden; */
 }
 
+
+
 #tiles {
-  /* height: 100%;
-  width: 100%; */
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
   position: absolute;
-  padding-top: 60px;
+  /* padding-top: 80px; */
   display: flex;
   justify-content: center;
   /* background-image: linear-gradient(45deg, #db270f, #0077ff); */
 }
 
 #tiles .tile {
-  width: 120px;
-  height: 120px;
+  /* pointer-events: auto; */
+  width: 100%;
+  height: 100%;
   border-radius: 25px;
   border: 0.5px solid rgba(0, 0, 0, 0.1);
   background-image: linear-gradient(45deg, #121a24, #2b3f56);
+  /* resize: both; */
 }
 
 #tiles .tile.localUser {
@@ -261,7 +275,9 @@ video {
 }
 
 .participant {
+  pointer-events: auto;
   position: relative;
+  height: 120px;
   width: 120px;
   display: flex;
   align-items: center;

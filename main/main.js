@@ -43,15 +43,17 @@ function createTrayWindow() {
     // webPreferences: {
     //   preload: path.join(__dirname, 'preloadTray.js'),
     // },
-    width: 290,
-    height: 300,
-    // show: false,
-    frame: false,
+    width: 320,
+    height: 360,
+    show: false,
+    // frame: false,
     autoHideMenuBar: true,
     setVisibleOnAllWorkspaces: true,
-    transparent: true,
+    // transparent: true,
     // skipTaskbar: true,
     hasShadow: false,
+    resizable: false,
+    // modal: true,
   });
 
   preventRefresh(trayWindow);
@@ -93,16 +95,17 @@ function createRoomWindow() {
     height: 400,
     fullscreen: true,
     frame: false,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     transparent: true,
     // skipTaskbar: true,
     hasShadow: false,
+    resizable: false,
     // Don't show the window until the user is in a call.
     // show: false,
   });
   // roomWindow = new BaseWindow({ width: 800, height: 400 })
 
-  preventRefresh(roomWindow);
+  // preventRefresh(roomWindow);
 
   // and load the index.html of the app.
   roomView = new WebContentsView({
@@ -110,8 +113,8 @@ function createRoomWindow() {
       preload: path.join(__dirname, 'preloadCall.js'),
     }
   });
-  roomView.setBackgroundColor("#0FFF") // hex ARGB transparent background
-  console.log(roomWindow.getBounds().width)
+  // roomView.setBackgroundColor("#0FFF") // hex ARGB transparent background
+  // console.log(roomWindow.getBounds().width)
   roomView.webContents.loadFile('index.html');
   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height })
   roomWindow.contentView.addChildView(roomView);
@@ -137,7 +140,7 @@ function createRoomWindow() {
     roomWindow.show();
     roomView.webContents.openDevTools();
   } else {
-    roomWindow.setIgnoreMouseEvents(true, { forward: true });
+    // roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }
   roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
@@ -148,7 +151,7 @@ function createRoomWindow() {
     level = 'floating';
   }
 
-  roomWindow.setAlwaysOnTop(true, level);
+  // roomWindow.setAlwaysOnTop(true, level);
 
   roomWindow.on('focus', () => {
     roomWindow.title = 'focused';
@@ -299,7 +302,7 @@ ipcMain.handle('left-call', () => {
 // in the call window.
 ipcMain.handle('set-ignore-mouse-events', (e, ...args) => {
   // const win = BrowserWindow.fromWebContents(e.sender);
-  roomWindow.setIgnoreMouseEvents(...args);
+  // roomWindow.setIgnoreMouseEvents(...args);
 });
 
 ipcMain.handle('close-app', () => {

@@ -1,7 +1,9 @@
 import { addOrUpdateTile } from "../call/tile.js";
 
 const wrapper = document.getElementById('wrapper');
-let toggleRoomBtn = document.getElementById('toggleRoom');
+const webstrate = document.getElementById('webstrates');
+// let toggleRoomBtn = document.getElementById('toggleRoom');
+let applyColorBtn = document.getElementById('applyColor');
 let roomLayer0 = document.getElementById('roomLayer0');
 
 let clickEvent = 'click';
@@ -21,13 +23,23 @@ export const specialUserName = 'admin'
 //     // callWindow.transparent = true;
 // });
 
-toggleRoomBtn.addEventListener(clickEvent, toggleRoom);
+// toggleRoomBtn.addEventListener(clickEvent, toggleRoom);
+applyColorBtn.addEventListener(clickEvent, applyColor);
 addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 // setupParticipantCursor(p);
 
 // registerToggleRoomListener(toggleRoom);
 
+function applyColor() {
+    const pickColorMain = document.getElementById('pickColorMain');
+    const pickColorAccent = document.getElementById('pickColorAccent');
+    const roomWrapper = document.getElementById("webstrates").contentWindow.document.getElementById("wrapper");
+    roomWrapper.style.backgroundColor = pickColorMain.value;
+    console.log(roomWrapper.id + ", " + pickColorMain.value);
+}
+
 function toggleRoom() {
+    
     if (roomLayer0.classList.contains('roomLayer-on')) {
         roomLayer0.classList.remove('roomLayer-on');
     } else {

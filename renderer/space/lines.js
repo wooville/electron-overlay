@@ -1,25 +1,25 @@
 const wrapper = document.getElementById('wrapper');
-let cursorIcon = document.getElementById('cursorIcon'); //one cursor for now
+// let cursorIcon = document.getElementById('cursorIcon'); //one cursor for now
 
 export default function setupParticipantCursor(participant) {
     // TODO disinct cursors
-    var line = new LeaderLine(
-        participant, cursorIcon, {
-        endPlug: 'hand'
-    }
-    );
+    // var line = new LeaderLine(
+    //     participant, cursorIcon, {
+    //     endPlug: 'hand'
+    // }
+    // );
 
-    wrapper.addEventListener('mousemove', () => {
-        line.position();
-    })
-
-    // wrapper.addEventListener('left-meeting', () => {
-    //     line.remove();
+    // wrapper.addEventListener('mousemove', () => {
+    //     line.position();
     // })
 
-    line.positionByWindowResize = false;
+    // // wrapper.addEventListener('left-meeting', () => {
+    // //     line.remove();
+    // // })
 
-    return line;
+    // line.positionByWindowResize = false;
+
+    // return line;
 }
 
 
@@ -27,13 +27,13 @@ export default function setupParticipantCursor(participant) {
 const move = (e) => {
     var x = e.pageX;
     var y = e.pageY;
-    cursorIcon.style.left = x + "px";
-    cursorIcon.style.top = y + "px";
+    // cursorIcon.style.left = x + "px";
+    // cursorIcon.style.top = y + "px";
 }
 
-document.addEventListener('mousemove', (e) => {
-    move(e);
-});
+// document.addEventListener('mousemove', (e) => {
+//     move(e);
+// });
 
 
 // line.color = 'red'; // Change the color to red.

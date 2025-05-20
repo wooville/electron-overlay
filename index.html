@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self' 'unsafe-inline'; frame-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
+    content="default-src 'self' 'unsafe-inline'; frame-src 'self' http://localhost:7007 https://demo.webstrates.net https://my.webstrates.net; script-src 'self' 'unsafe-eval' https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <link href="./styles.css" rel="stylesheet" />
   <title>Daily Call Overlay</title>
@@ -13,12 +13,14 @@
 
 <body>
   <div id="wrapper">
+    <param name="allowfullscreen" value="true" />
 
-    <div id="roomLayer0" class="roomLayer">
-
-    </div>
-
-    <div id="callControls" class="controls clickable" draggable="true">
+    <!-- <div id="roomLayer0" class="roomLayer clickable">
+    </div> -->
+    <iframe id="webstrates" src="https://demo.webstrates.net/friendly-bird-24/" class="clickable"></iframe>
+    
+    
+    <div id="callControls" class="controls clickable draggable">
       <div id="controller">
         <div id="dots"></div>
         <div id="line"></div>
@@ -31,23 +33,35 @@
       <button id="leave">Leave Call</button>
     </div>
 
-    <div id="roomControls" class="controls clickable controls-on" draggable="true">
+    <div id="roomControls" class="controls clickable controls-on draggable">
       <div id="controller">
         <div id="dots"></div>
         <div id="line"></div>
       </div>
-      <button id="toggleRoom" class="clickable">ROOM</button>
+      <div>
+        <input type="color" id="pickColorMain" value="#e66465" />
+        <label for="head">Main</label>
+      </div>
+      
+      <div>
+        <input type="color" id="pickColorAccent" value="#f6b73c" />
+        <label for="body">Accent</label>
+      </div>
+      <button id="applyColor" class="clickable">APPLY</button>
+      <!-- <button id="toggleRoom" class="clickable">ROOM</button> -->
       <!-- <button id="toggleLive"></button> -->
     </div>
 
-    <div id="avatarControls" class="controls clickable controls-on" draggable="true">
+    <!-- <div id="avatarControls" class="controls clickable controls-on draggable">
       <div id="controller">
         <div id="dots"></div>
         <div id="line"></div>
-      </div>
+      </div> -->
+      
+      
     </div>
 
-    <div id="cursorIcon"></div>
+    <!-- <div id="cursorIcon"></div> -->
 
     <!-- <div id="testboxes">
       <div class="box" id="testbox"></div>
@@ -61,6 +75,7 @@
   <script src="./plain-draggable.min.js"></script>
   <script src="./leader-line.min.js"></script>
   <script src="./renderer/call/daily.js" type="module"></script>
+  <script src="./renderer/call/drag.js" type="module"></script>
   <script src="./renderer/space/room.js" type="module"></script>
   <!-- <script src="./renderer/space/lines.js" type="module"></script> -->
 </body>
