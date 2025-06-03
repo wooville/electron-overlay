@@ -1,6 +1,6 @@
 // nav.js handles all call controls
 
-// import setupDraggableElement from './drag.js';
+import setupDraggableElement from './drag.js';
 
 // control panels and related elements
 // call controls, device toggles
@@ -8,12 +8,12 @@ const toggleCamBtn = document.getElementById('toggleCam');
 const toggleMicBtn = document.getElementById('toggleMic');
 const toggleBlurBtn = document.getElementById('toggleBlur');
 const callControls = document.getElementById('callControls');
-// const callControlsDraggable = setupDraggableElement(callControls); // keep draggable objects in case we need to tweak options eventually
+const callControlsDraggable = setupDraggableElement(callControls);
 
 // room controls
 const toggleLiveBtn = document.getElementById('toggleLive'); // join/start a "room" for a call, each user entitled to their own room at least
 const roomControls = document.getElementById('roomControls');
-// const roomControlsDraggable = setupDraggableElement(roomControls);
+const roomControlsDraggable = setupDraggableElement(roomControls);
 
 // avatar controls
 const avatarControls = document.getElementById('avatarControls');

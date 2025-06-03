@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self' 'unsafe-inline'; frame-src 'self' http://localhost:7007 https://demo.webstrates.net https://my.webstrates.net; script-src 'self' 'unsafe-eval' https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
+    content="default-src 'self' 'unsafe-inline'; frame-src 'self' http://localhost:7007 https://demo.webstrates.net https://my.webstrates.net; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <link href="./styles.css" rel="stylesheet" />
   <title>Daily Call Overlay</title>
@@ -17,7 +17,7 @@
 
     <!-- <div id="roomLayer0" class="roomLayer clickable">
     </div> -->
-    <iframe id="webstrates" src="https://demo.webstrates.net/friendly-bird-24/" class="clickable"></iframe>
+    <iframe id="webstrates" src="https://demo.webstrates.net/slippery-bobcat-85/" class="clickable"></iframe>
     <div id="tiles"></div>
     
     <div id="callControls" class="controls clickable draggable">
@@ -72,8 +72,22 @@
   </div>
   <!-- You can also require other files to run in this process -->
   <script src="https://unpkg.com/@daily-co/daily-js"></script>
-  <script src="./plain-draggable.min.js"></script>
-  <script src="./leader-line.min.js"></script>
+  <!-- <script src="./plain-draggable.min.js"></script>
+  <script src="./leader-line.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/EaselPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/GSDevTools.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Observer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Physics2DPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <!-- ScrollSmoother requires ScrollTrigger -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
   <script src="./renderer/call/daily.js" type="module"></script>
   <script src="./renderer/call/drag.js" type="module"></script>
   <script src="./renderer/space/room.js" type="module"></script>

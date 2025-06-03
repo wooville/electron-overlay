@@ -1,6 +1,6 @@
 // tile.js handles all participant tiles.
 
-// import setupDraggableElement from './drag.js';
+import setupDraggableElement from './drag.js';
 import setupParticipantCursor from '../space/lines.js'
 
 // addOrUpdateTile adds a tile for a participant, or updates a tile
@@ -134,7 +134,7 @@ function addTile(id, userName) {
 
   const tiles = document.getElementById('tiles');
   tiles.appendChild(participant);
-  // setupDraggableElement(participant);
+  setupDraggableElement(participant);
   // draggable.snap = { y: 200 * id };
 
   return { participant, video, audio };
