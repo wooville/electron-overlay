@@ -13,6 +13,8 @@ const {
   shell,
   globalShortcut,
   webContents,
+  session,
+  desktopCapturer,
 } = require('electron');
 
 const path = require('path');
@@ -177,6 +179,17 @@ function createRoomWindow() {
   // view2.webContents.loadURL('https://github.com/electron/electron')
   // view2.setBounds({ x: 400, y: 0, width: 400, height: 400 })
   // view1.webContents.openDevTools();
+
+  session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
+    desktopCapturer.getSources({ types: ['screen'] }).then((sources) => {
+      // Grant access to the first screen found.
+      callback({ video: sources[0], audio: 'loopback' })
+    })
+    // If true, use the system picker if available.
+    // Note: this is currently experimental. If the system picker
+    // is available, it will be used and the media request handler
+    // will not be invoked.
+  }, { useSystemPicker: true })
 }
 
 // This method will be called when Electron has finished
