@@ -24,7 +24,7 @@ export const specialUserName = 'admin'
 // });
 
 // toggleRoomBtn.addEventListener(clickEvent, toggleRoom);
-applyColorBtn.addEventListener(clickEvent, applyColor);
+// applyColorBtn.addEventListener(clickEvent, applyColor);
 addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 // setupParticipantCursor(p);
 
@@ -39,7 +39,7 @@ function applyColor() {
 }
 
 function toggleRoom() {
-    
+
     if (roomLayer0.classList.contains('roomLayer-on')) {
         roomLayer0.classList.remove('roomLayer-on');
     } else {

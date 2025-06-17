@@ -92,16 +92,16 @@ function createTrayWindow() {
 function createRoomWindow() {
   // Create the browser window.
   roomWindow = new BaseWindow({
-    title: 'Shared Overlay',
-    width: 800,
-    height: 400,
-    fullscreen: true,
+    title: 'Video Overlay',
+    width: 1280,
+    height: 960,
+    // fullscreen: true,
     frame: false,
-    autoHideMenuBar: false,
+    // autoHideMenuBar: false,
     transparent: true,
     // skipTaskbar: true,
     hasShadow: false,
-    resizable: false,
+    // resizable: false,
     // Don't show the window until the user is in a call.
     // show: false,
   });
@@ -155,19 +155,19 @@ function createRoomWindow() {
 
   // roomWindow.setAlwaysOnTop(true, level);
 
-  roomWindow.on('focus', () => {
-    roomWindow.title = 'focused';
-    // mousePos = screen.getCursorScreenPoint();
-    // console.log(mousePos);
-    // roomWindow.transparent = false;
-    // roomWindow.setAlwaysOnTop(true, level);
-  });
+  // roomWindow.on('focus', () => {
+  //   roomWindow.title = 'focused';
+  //   // mousePos = screen.getCursorScreenPoint();
+  //   // console.log(mousePos);
+  //   // roomWindow.transparent = false;
+  //   // roomWindow.setAlwaysOnTop(true, level);
+  // });
 
-  roomWindow.on('blur', () => {
-    roomWindow.title = 'blurred';
-    // roomWindow.transparent = true;
-    // roomWindow.setAlwaysOnTop(false, level);
-  });
+  // roomWindow.on('blur', () => {
+  //   roomWindow.title = 'blurred';
+  //   // roomWindow.transparent = true;
+  //   // roomWindow.setAlwaysOnTop(false, level);
+  // });
 
   // const view1 = new WebContentsView()
   // roomWindow.contentView.addChildView(view1)
