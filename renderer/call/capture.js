@@ -31,10 +31,6 @@ stopButton.addEventListener('click', () => {
   recordedChunks = [];
 })
 
-
-
-
-
 function handleDataAvailable(event) {
   console.log("data-available");
   if (event.data.size > 0) {

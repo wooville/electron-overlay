@@ -2,9 +2,11 @@ import { addOrUpdateTile } from "../call/tile.js";
 
 const wrapper = document.getElementById('wrapper');
 const webstrate = document.getElementById('webstrates');
-// let toggleRoomBtn = document.getElementById('toggleRoom');
-let applyColorBtn = document.getElementById('applyColor');
-let roomLayer0 = document.getElementById('roomLayer0');
+// const toggleRoomBtn = document.getElementById('toggleRoom');
+const applyColorBtn = document.getElementById('applyColor');
+const roomLayer0 = document.getElementById('roomLayer0');
+
+const checkSeatsBtn = document.getElementById('checkSeats');
 
 let clickEvent = 'click';
 export const specialUserName = 'admin'
@@ -25,10 +27,23 @@ export const specialUserName = 'admin'
 
 // toggleRoomBtn.addEventListener(clickEvent, toggleRoom);
 // applyColorBtn.addEventListener(clickEvent, applyColor);
+checkSeatsBtn.addEventListener(clickEvent, checkSeats);
 addOrUpdateTile(specialUserName, specialUserName, null, null, true);
+// webstrate.webstrate.on("transcluded", function (webstrateId, clientId, user) {
+//     // The webstrate client in the iframe has now finished loading.
+//     console.log("clude test");
+// });
 // setupParticipantCursor(p);
 
 // registerToggleRoomListener(toggleRoom);
+
+function checkSeats() {
+    // const seats = webstrate.contentWindow.document.querySelectorAll(".draggable");
+    // console.log(seats.length);
+
+    // const frame = document.getElementById('your-frame-id');
+    webstrate.contentWindow.postMessage("messageData test", webstrate.getAttribute("src"));
+}
 
 function applyColor() {
     const pickColorMain = document.getElementById('pickColorMain');
@@ -39,7 +54,6 @@ function applyColor() {
 }
 
 function toggleRoom() {
-
     if (roomLayer0.classList.contains('roomLayer-on')) {
         roomLayer0.classList.remove('roomLayer-on');
     } else {
