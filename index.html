@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self' 'unsafe-inline'; frame-src 'self' http://localhost:7007 https://demo.webstrates.net https://my.webstrates.net; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
+    content="default-src 'self' 'unsafe-inline'; frame-src 'self' http://localhost:7007 http://146.190.190.87:7007 https://demo.webstrates.net https://my.webstrates.net; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <link href="./styles.css" rel="stylesheet" />
   <title>Daily Call Overlay</title>
@@ -16,7 +16,7 @@
 
     <div id="roomLayer0" class="roomLayer clickable">
     </div>
-    <iframe id="webstrates" src="https://demo.webstrates.net/slippery-bobcat-85/" class="clickable"></iframe>
+    <iframe id="webstrates" src="http://146.190.190.87:7007/chilly-insect-87/" class="clickable"></iframe>
     <div id="tiles"></div>
 
     <div id="callControls" class="controls clickable draggable">
@@ -37,41 +37,16 @@
       <!-- <button id="stopButton" class="button">Stop</button> -->
     </div>
 
-    <div id="roomControls" class="controls clickable controls-on draggable">
+    <!-- <div id="roomControls" class="controls clickable controls-on draggable">
       <button id="startButton" class="button">Start</button>
       <button id="stopButton" class="button">Stop</button>
       <video width="320" height="240" autoplay></video>
-      <!-- <div id="controller">
-        <div id="dots"></div>
-        <div id="line"></div>
-      </div>
-      <div>
-        <input type="color" id="pickColorMain" value="#e66465" />
-        <label for="head">Main</label>
-      </div>
-      
-      <div>
-        <input type="color" id="pickColorAccent" value="#f6b73c" />
-        <label for="body">Accent</label>
-      </div>
-      <button id="applyColor" class="clickable">APPLY</button> -->
-      <!-- <button id="toggleRoom" class="clickable">ROOM</button> -->
-      <!-- <button id="toggleLive"></button> -->
-    </div>
+    </div> -->
 
     <!-- <div id="avatarControls" class="controls clickable controls-on draggable">
 
     </div> -->
-
-
   </div>
-
-  <!-- <div id="cursorIcon"></div> -->
-
-  <!-- <div id="testboxes">
-      <div class="box" id="testbox"></div>
-      <div class="box" id="testbox2"></div>
-    </div> -->
 
 
   </div>

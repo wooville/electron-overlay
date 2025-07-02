@@ -11,12 +11,15 @@ const callControls = document.getElementById('callControls');
 const callControlsDraggable = setupDraggableElement(callControls);
 
 // room controls
-const toggleLiveBtn = document.getElementById('toggleLive'); // join/start a "room" for a call, each user entitled to their own room at least
-const roomControls = document.getElementById('roomControls');
-const roomControlsDraggable = setupDraggableElement(roomControls);
+// const toggleLiveBtn = document.getElementById('toggleLive'); // join/start a "room" for a call, each user entitled to their own room at least
+// const roomControls = document.getElementById('roomControls');
+// const roomControlsDraggable = setupDraggableElement(roomControls);
+
+const mainControls = document.getElementById('mainControls');
+const mainControlsDraggable = setupDraggableElement(mainControls);
 
 // avatar controls
-const avatarControls = document.getElementById('avatarControls');
+// const avatarControls = document.getElementById('avatarControls');
 // const avatarControlsDraggable = setupDraggableElement(avatarControls);
 
 const clickEvent = 'click';
