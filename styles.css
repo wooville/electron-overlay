@@ -18,11 +18,13 @@ body {
   flex-direction: column;
   user-select: none;
   box-sizing: border-box;
+  /* background: rgba(0, 0, 0, 0); */
+  /* pointer-events: none; */
 }
 
-#mainControls {
+/* #mainControls {
   display: none;
-}
+} */
 
 #webstrates {
   height: 100%;
@@ -61,6 +63,8 @@ body {
   box-sizing: border-box;
   position: absolute;
   padding: 0px;
+}
+#wrapper .draggable:hover {
   border: 1px solid #aaa;
 }
 
@@ -72,6 +76,7 @@ body {
 }
 
 .resize-handle {
+  visibility:hidden;
   box-sizing: border-box;
   position: absolute;
   width: 0px;
@@ -82,6 +87,9 @@ body {
   border-width: 0 0 16px 16px;
   border-color: transparent transparent #aaa transparent;
   cursor: nw-resize !important;
+}
+.controls:hover .resize-handle {
+  visibility:visible;
 }
 
 
@@ -107,6 +115,7 @@ body {
   display: flex;
   justify-content: center;
   box-sizing: border-box;
+  background: transparent;
   /* background-image: linear-gradient(45deg, #db270f, #0077ff); */
 }
 

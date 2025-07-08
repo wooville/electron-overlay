@@ -1,7 +1,7 @@
 // tile.js handles all participant tiles.
 
 import setupDraggableElement from './drag.js';
-import setupParticipantCursor from '../space/lines.js'
+// import setupParticipantCursor from '../space/lines.js'
 
 // addOrUpdateTile adds a tile for a participant, or updates a tile
 // if it already exists.
@@ -38,7 +38,7 @@ export function addOrUpdateTile(
     audioTag = tags.audio;
     if (isLocal) {
       audioTag.volume = 0;
-      setupParticipantCursor(participant);
+      // setupParticipantCursor(participant);
     }
   }
 

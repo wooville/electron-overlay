@@ -1,10 +1,10 @@
 import { addOrUpdateTile } from "../call/tile.js";
 
 const wrapper = document.getElementById('wrapper');
-const webstrate = document.getElementById('webstrates');
+const webstrates = document.getElementById('webstrates');
 // const toggleRoomBtn = document.getElementById('toggleRoom');
-const applyColorBtn = document.getElementById('applyColor');
-const roomLayer0 = document.getElementById('roomLayer0');
+// const applyColorBtn = document.getElementById('applyColor');
+// const roomLayer0 = document.getElementById('roomLayer0');
 
 const checkSeatsBtn = document.getElementById('checkSeats');
 
@@ -42,7 +42,8 @@ function checkSeats() {
     // console.log(seats.length);
 
     // const frame = document.getElementById('your-frame-id');
-    webstrate.contentWindow.postMessage("messageData test", webstrate.getAttribute("src"));
+    // webstrates.contentWindow.postMessage("messageData test", webstrates.getAttribute("src"));
+    api.sendMessage();
 }
 
 function applyColor() {

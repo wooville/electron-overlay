@@ -64,6 +64,9 @@ contextBridge.exposeInMainWorld('api', {
   leftCall: () => {
     ipcRenderer.invoke('left-call');
   },
+  sendMessage: () => {
+    ipcRenderer.invoke('send-message', null);
+  }
 });
 
 // // This listener will allow us to handle a call join failure.

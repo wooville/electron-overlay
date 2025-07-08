@@ -65,7 +65,7 @@ function createTrayWindow() {
       preload: path.join(__dirname, 'preloadTray.js'),
     }
   });
-  trayView.webContents.loadFile('tray.html');
+  trayView.webContents.loadFile('tray_simple.html');
   trayView.setBounds({ x: 0, y: 0, width: 290, height: 300 })
   trayWindow.contentView.addChildView(trayView);
 
@@ -89,13 +89,73 @@ function createTrayWindow() {
   })
 }
 
+function createWebstratesWindow() {
+  // Create the window that opens on app start
+  // and tray click
+  webstratesWindow = new BaseWindow({
+    title: 'Video Playground',
+    width: 1280,
+    height: 960,
+    fullscreen: true,
+    frame: false,
+    // autoHideMenuBar: false,
+    transparent: true,
+    // skipTaskbar: true,
+    hasShadow: false,
+    // resizable: false,
+    // Don't show the window until the user is in a call.
+    // show: false,
+  });
+
+  webstratesView = new WebContentsView({
+    webPreferences: {
+      preload: path.join(__dirname, 'preloadCall.js'),
+    }
+  });
+  webstratesView.webContents.loadURL('https://videoplayground.xyz/a3JCZywVD/');
+  webstratesView.webContents.setBackgroundThrottling(false);
+  webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height })
+  webstratesWindow.contentView.addChildView(webstratesView);
+
+  if (devMode) {
+    // roomWindow.show();
+    // webstratesView.webContents.openDevTools();
+    // roomView.webContents.openDevTools();
+  }
+  
+  // roomView.addChildView(webstrateView);
+
+  webstratesWindow.on('will-resize', (e, newBounds, details) => {
+    webstratesView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+    // roomView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+  })
+  webstratesWindow.on('resize', () => {
+    webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height });
+    // roomView.setBounds({ x: 0, y: 0, width: roomView.getBounds().width, height: roomView.getBounds().height });
+  })
+  webstratesWindow.on('enter-fullscreen', () => {
+    webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height });
+    // roomView.setBounds({ x: 0, y: 0, width: roomView.getBounds().width, height: roomView.getBounds().height });
+  })
+  webstratesWindow.on('exit-fullscreen', () => {
+    webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height });
+    // roomView.setBounds({ x: 0, y: 0, width: roomView.getBounds().width, height: roomView.getBounds().height });
+  })
+  webstratesWindow.on('closed', () => {
+    webstratesView.webContents.close()
+    roomView.webContents.close()
+  })
+}
+
 function createRoomWindow() {
   // Create the browser window.
   roomWindow = new BaseWindow({
+    // parent: webstratesWindow,
     title: 'Video Overlay',
-    width: 1280,
-    height: 960,
-    // fullscreen: true,
+    // useContentSize: true,
+    // width: 1280,
+    // height: 960,
+    fullscreen: true,
     frame: false,
     // autoHideMenuBar: false,
     transparent: true,
@@ -108,6 +168,10 @@ function createRoomWindow() {
   // roomWindow = new BaseWindow({ width: 800, height: 400 })
 
   // preventRefresh(roomWindow);
+  
+  // roomView.setBackgroundColor("#0FFF") // hex ARGB transparent background
+  // console.log(roomWindow.getBounds().width)
+  // roomView.webContents.loadFile('index.html');
 
   // and load the index.html of the app.
   roomView = new WebContentsView({
@@ -115,34 +179,37 @@ function createRoomWindow() {
       preload: path.join(__dirname, 'preloadCall.js'),
     }
   });
-  // roomView.setBackgroundColor("#0FFF") // hex ARGB transparent background
-  // console.log(roomWindow.getBounds().width)
   roomView.webContents.loadFile('index.html');
+  roomView.webContents.setBackgroundThrottling(false);
+  roomView.setBackgroundColor("#00000000");
   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height })
+  
+  // roomView.addChildView(webstrateView);
   roomWindow.contentView.addChildView(roomView);
 
-  roomWindow.on('will-resize', (e, newBounds, details) => {
-    roomView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
-  })
-  roomWindow.on('resize', () => {
-    roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
-  })
-  roomWindow.on('enter-fullscreen', () => {
-    roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
-  })
-  roomWindow.on('exit-fullscreen', () => {
-    roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
-  })
+  // roomWindow.on('will-resize', (e, newBounds, details) => {
+  //   roomView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+  // })
+  // roomWindow.on('resize', () => {
+  //   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
+  // })
+  // roomWindow.on('enter-fullscreen', () => {
+  //   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
+  // })
+  // roomWindow.on('exit-fullscreen', () => {
+  //   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
+  // })
   roomWindow.on('closed', () => {
     roomView.webContents.close()
     trayView.webContents.close()
   })
 
   if (devMode) {
-    roomWindow.show();
+    // roomWindow.show();
+    // webstratesView.webContents.openDevTools();
     roomView.webContents.openDevTools();
   } else {
-    // roomWindow.setIgnoreMouseEvents(true, { forward: true });
+    roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }
   roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
@@ -153,7 +220,7 @@ function createRoomWindow() {
     level = 'floating';
   }
 
-  // roomWindow.setAlwaysOnTop(true, level);
+  roomWindow.setAlwaysOnTop(true, level);
 
   // roomWindow.on('focus', () => {
   //   roomWindow.title = 'focused';
@@ -196,10 +263,11 @@ function createRoomWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  createWebstratesWindow();
   createRoomWindow();
   createTrayWindow();
   setupTray();
-});
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -315,9 +383,17 @@ ipcMain.handle('left-call', () => {
 // in the call window.
 ipcMain.handle('set-ignore-mouse-events', (e, ...args) => {
   // const win = BrowserWindow.fromWebContents(e.sender);
-  // roomWindow.setIgnoreMouseEvents(...args);
+  roomWindow.setIgnoreMouseEvents(...args);
 });
 
 ipcMain.handle('close-app', () => {
   app.quit();
+});
+
+ipcMain.handle('send-message', (e, args) => {
+  // webstratesView.webContents.postMessage("messageData test", "https://videoplayground.xyz/EtHMdPJbR/");
+  webstratesView.webContents.executeJavaScript("addWindow();");
+  // webstratesView.webContents.postMessage("messageData test", webstratesView.webContents.getURL());
+  // console.log(webstratesView.webContents.getURL());
+  // webstratesView.webContents.postMessage("messageData test", webstratesView.webContents.getURL());
 });
