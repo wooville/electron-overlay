@@ -6,7 +6,9 @@ const webstrates = document.getElementById('webstrates');
 // const applyColorBtn = document.getElementById('applyColor');
 // const roomLayer0 = document.getElementById('roomLayer0');
 
-const checkSeatsBtn = document.getElementById('checkSeats');
+const syncBtn = document.getElementById('syncBtn');
+const presetsBtn = document.getElementById('presetsBtn');
+const editBtn = document.getElementById('editBtn');
 
 let clickEvent = 'click';
 export const specialUserName = 'admin'
@@ -27,7 +29,9 @@ export const specialUserName = 'admin'
 
 // toggleRoomBtn.addEventListener(clickEvent, toggleRoom);
 // applyColorBtn.addEventListener(clickEvent, applyColor);
-checkSeatsBtn.addEventListener(clickEvent, checkSeats);
+syncBtn.addEventListener(clickEvent, requestSync);
+presetsBtn.addEventListener(clickEvent, requestPresets);
+editBtn.addEventListener(clickEvent, requestEdit);
 addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 // webstrate.webstrate.on("transcluded", function (webstrateId, clientId, user) {
 //     // The webstrate client in the iframe has now finished loading.
@@ -37,13 +41,21 @@ addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 
 // registerToggleRoomListener(toggleRoom);
 
-function checkSeats() {
+function requestSync() {
     // const seats = webstrate.contentWindow.document.querySelectorAll(".draggable");
     // console.log(seats.length);
 
     // const frame = document.getElementById('your-frame-id');
     // webstrates.contentWindow.postMessage("messageData test", webstrates.getAttribute("src"));
-    api.sendMessage();
+    api.requestSync();
+}
+
+function requestPresets() {
+    api.requestPresets();
+}
+
+function requestEdit() {
+    api.requestEdit();
 }
 
 function applyColor() {

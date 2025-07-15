@@ -16,7 +16,7 @@ const callControlsDraggable = setupDraggableElement(callControls);
 // const roomControlsDraggable = setupDraggableElement(roomControls);
 
 const mainControls = document.getElementById('mainControls');
-const mainControlsDraggable = setupDraggableElement(mainControls);
+// const mainControlsDraggable = setupDraggableElement(mainControls);
 
 // avatar controls
 // const avatarControls = document.getElementById('avatarControls');

@@ -15,6 +15,7 @@ const {
   webContents,
   session,
   desktopCapturer,
+  webFrame,
 } = require('electron');
 
 const path = require('path');
@@ -22,6 +23,7 @@ const positioner = require('electron-traywindow-positioner');
 
 const devMode = app.commandLine.hasSwitch('dev');
 
+const webstratesURL = 'https://videoplayground.xyz/frontpage/';
 // const ll = require('leader-line');
 
 let roomWindow = null;
@@ -35,6 +37,59 @@ let mousePos = null;
 //   let mousePos = screen.getCursorScreenPoint();
 //   console.log(mousePos);
 // });
+
+// function createControlPanel() {
+//   // Create the window that opens on app start
+//   // and tray click
+//   controlWindow = new BaseWindow({
+//     parent: roomWindow,
+//     title: 'Control Panel',
+//     // webPreferences: {
+//     //   preload: path.join(__dirname, 'preloadTray.js'),
+//     // },
+//     width: 360,
+//     height: 360,
+//     show: true,
+//     // frame: false,
+//     autoHideMenuBar: true,
+//     setVisibleOnAllWorkspaces: true,
+//     // transparent: true,
+//     // skipTaskbar: true,
+//     hasShadow: false,
+//     // resizable: false,
+//     // modal: true,
+//   });
+
+//   // preventRefresh(trayWindow);
+
+//   trayView = new WebContentsView({
+//     webPreferences: {
+//       preload: path.join(__dirname, 'preloadTray.js'),
+//     }
+//   });
+//   trayView.webContents.loadFile('tray_simple.html');
+//   trayView.setBounds({ x: 0, y: 0, width: 290, height: 300 })
+//   trayWindow.contentView.addChildView(trayView);
+
+//   trayWindow.on('blur', () => {
+//     // trayWindow.hide();
+//   });
+//   trayWindow.on('show', () => {
+//     // positioner.position(trayWindow, tray.getBounds());
+//     trayWindow.focus();
+//   });
+//   trayView.webContents.once('dom-ready', () => {
+//     trayWindow.show();
+//   });
+//   trayView.webContents.on('new-window', (e, url) => {
+//     e.preventDefault();
+//     shell.openExternal(url);
+//   });
+
+//   trayWindow.on('closed', () => {
+//     trayView.webContents.close()
+//   })
+// }
 
 function createTrayWindow() {
   // Create the window that opens on app start
@@ -112,7 +167,7 @@ function createWebstratesWindow() {
       preload: path.join(__dirname, 'preloadCall.js'),
     }
   });
-  webstratesView.webContents.loadURL('https://videoplayground.xyz/a3JCZywVD/');
+  webstratesView.webContents.loadURL(webstratesURL);
   webstratesView.webContents.setBackgroundThrottling(false);
   webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height })
   webstratesWindow.contentView.addChildView(webstratesView);
@@ -122,6 +177,42 @@ function createWebstratesWindow() {
     // webstratesView.webContents.openDevTools();
     // roomView.webContents.openDevTools();
   }
+
+  webstratesView.webContents.setZoomFactor(1.0);
+
+  // Upper Limit is working of 500 %
+  webstratesView.webContents
+      .setVisualZoomLevelLimits(1, 5)
+      .then(console.log("Zoom Levels Have been Set between 100% and 500%"))
+      .catch((err) => console.log(err));
+
+  webstratesView.webContents.on("zoom-changed", (event, zoomDirection) => {
+      console.log(zoomDirection);
+      var currentZoom = webstratesView.webContents.getZoomFactor();
+      console.log("Current Zoom Factor - ", currentZoom);
+      // console.log('Current Zoom Level at - '
+      // , win.webContents.getZoomLevel());
+      console.log("Current Zoom Level at - ", webstratesView.webContents.zoomLevel);
+
+      if (zoomDirection === "in") {
+        
+          // win.webContents.setZoomFactor(currentZoom + 0.20);
+          webstratesView.webContents.zoomFactor = currentZoom + 0.1;
+
+          console.log("Zoom Factor Increased to - "
+                      , webstratesView.webContents.zoomFactor * 100, "%");
+      }
+      if (zoomDirection === "out") {
+        
+          // win.webContents.setZoomFactor(currentZoom - 0.20);
+          webstratesView.webContents.zoomFactor = currentZoom - 0.1;
+
+          console.log("Zoom Factor Decreased to - "
+                      , webstratesView.webContents.zoomFactor * 100, "%");
+      }
+  });
+
+
   
   // roomView.addChildView(webstrateView);
 
@@ -157,9 +248,9 @@ function createRoomWindow() {
     // height: 960,
     fullscreen: true,
     frame: false,
-    // autoHideMenuBar: false,
+    autoHideMenuBar: false,
     transparent: true,
-    // skipTaskbar: true,
+    skipTaskbar: true,
     hasShadow: false,
     // resizable: false,
     // Don't show the window until the user is in a call.
@@ -206,8 +297,8 @@ function createRoomWindow() {
 
   if (devMode) {
     // roomWindow.show();
-    // webstratesView.webContents.openDevTools();
-    roomView.webContents.openDevTools();
+    webstratesView.webContents.openDevTools();
+    // roomView.webContents.openDevTools();
   } else {
     roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }
@@ -281,9 +372,9 @@ app.on('window-all-closed', () => {
 
 // setupTray creates the system tray where our application will live.
 function setupTray() {
-  if (app.dock) {
-    app.dock.hide();
-  }
+  // if (app.dock) {
+  //   app.dock.hide();
+  // }
 
   tray = new Tray(path.join(__dirname, '../assets/tray.png'));
   setupTrayMenu(false);
@@ -375,7 +466,7 @@ ipcMain.handle('call-join-update', (e, joined) => {
 ipcMain.handle('left-call', () => {
   setupTrayMenu(false);
   trayView.webContents.send('left-call');
-  roomWindow.hide();
+  // roomWindow.hide();
 });
 
 // This handler updates our mouse event settings depending
@@ -390,10 +481,17 @@ ipcMain.handle('close-app', () => {
   app.quit();
 });
 
-ipcMain.handle('send-message', (e, args) => {
+ipcMain.handle('request-sync', (e, args) => {
   // webstratesView.webContents.postMessage("messageData test", "https://videoplayground.xyz/EtHMdPJbR/");
   webstratesView.webContents.executeJavaScript("addWindow();");
   // webstratesView.webContents.postMessage("messageData test", webstratesView.webContents.getURL());
   // console.log(webstratesView.webContents.getURL());
   // webstratesView.webContents.postMessage("messageData test", webstratesView.webContents.getURL());
+});
+
+ipcMain.handle('request-presets', (e, args) => {
+  webstratesView.webContents.executeJavaScript("openSettings();");
+});
+ipcMain.handle('request-edit', (e, args) => {
+  webstratesView.webContents.executeJavaScript("toggleEdit();");
 });

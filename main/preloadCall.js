@@ -64,8 +64,14 @@ contextBridge.exposeInMainWorld('api', {
   leftCall: () => {
     ipcRenderer.invoke('left-call');
   },
-  sendMessage: () => {
-    ipcRenderer.invoke('send-message', null);
+  requestSync: () => {
+    ipcRenderer.invoke('request-sync', null);
+  },
+  requestPresets: () => {
+    ipcRenderer.invoke('request-presets', null);
+  },
+  requestEdit: () => {
+    ipcRenderer.invoke('request-edit', null);
   }
 });
 
