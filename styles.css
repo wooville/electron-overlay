@@ -81,14 +81,14 @@ body {
   position: absolute;
   width: 0px;
   height: 0px;
-  margin-top: -17px;
-  margin-left: -17px;
+  margin-top: -33px;
+  margin-left: -33px;
   border-style: solid;
-  border-width: 0 0 16px 16px;
+  border-width: 0 0 32px 32px;
   border-color: transparent transparent #aaa transparent;
   cursor: nw-resize !important;
 }
-.controls:hover .resize-handle {
+.clickable:hover .resize-handle {
   visibility:visible;
 }
 

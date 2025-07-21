@@ -297,8 +297,8 @@ function createRoomWindow() {
 
   if (devMode) {
     // roomWindow.show();
-    webstratesView.webContents.openDevTools();
-    // roomView.webContents.openDevTools();
+    // webstratesView.webContents.openDevTools();
+    roomView.webContents.openDevTools();
   } else {
     roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }

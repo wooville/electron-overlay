@@ -67,7 +67,7 @@
       handle = handles[0];
     } else {
       handle = document.createElement("div");
-      handle.className = "resize-handle";
+      handle.className = "resize-handle clickable";
       element.appendChild(handle);
     }
     
