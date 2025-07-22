@@ -9,6 +9,7 @@ const webstrates = document.getElementById('webstrates');
 const syncBtn = document.getElementById('syncBtn');
 const presetsBtn = document.getElementById('presetsBtn');
 const editBtn = document.getElementById('editBtn');
+const refreshBtn = document.getElementById('refreshBtn');
 
 let clickEvent = 'click';
 export const specialUserName = 'admin'
@@ -32,6 +33,7 @@ export const specialUserName = 'admin'
 syncBtn.addEventListener(clickEvent, requestSync);
 presetsBtn.addEventListener(clickEvent, requestPresets);
 editBtn.addEventListener(clickEvent, requestEdit);
+refreshBtn.addEventListener(clickEvent, refreshPage);
 addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 // webstrate.webstrate.on("transcluded", function (webstrateId, clientId, user) {
 //     // The webstrate client in the iframe has now finished loading.
@@ -56,6 +58,10 @@ function requestPresets() {
 
 function requestEdit() {
     api.requestEdit();
+}
+
+function refreshPage() {
+    api.refreshPage();
 }
 
 function applyColor() {

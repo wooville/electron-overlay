@@ -72,6 +72,9 @@ contextBridge.exposeInMainWorld('api', {
   },
   requestEdit: () => {
     ipcRenderer.invoke('request-edit', null);
+  },
+  refreshPage: () => {
+    ipcRenderer.invoke('refresh-page', null);
   }
 });
 
