@@ -125,21 +125,55 @@ function toggleClickableTiles() {
 }
 
 function changeMode() {
+    var modeCount = parseInt(modeBtn.innerHTML);
     var count = 0;
     // const nearX=["0px", window.visualViewport.width+"px"];
     // const nearY=["0px", window.visualViewport.height+"px"];
     const participants = document.querySelectorAll(".participant");
 
     participants.forEach(function (participant) {
-        participant.style.left= (count%2===0) ? "0px" : window.visualViewport.width-320+"px";
-        participant.style.top = window.visualViewport.height-320+"px";
+        var cs = getComputedStyle(participant);
+        console.log(modeCount);
+        if (modeCount%3===0) {
+            //mode0
+            participant.style.width="";
+            participant.style.height="";
+            participant.style.left="";
+            participant.style.top="";
+
+            participant.style.left= (count%2===0) ? "0px" : window.visualViewport.width-cs.width+"px";
+            participant.style.top= window.visualViewport.height-cs.height+"px";
+        } else if (modeCount%3===1) {
+            //mode1
+            participant.style.width="";
+            participant.style.height="";
+            participant.style.left="";
+            participant.style.top="";
+
+            participant.style.width="800px";
+            participant.style.height="800px";
+            participant.style.left= "0px";
+            participant.style.top= cs.height*count+"px";
+        } else if (modeCount%3===2){
+            //mode2
+            participant.style.width="";
+            participant.style.height="";
+            participant.style.left="";
+            participant.style.top="";
+
+            participant.style.top= (count%2===0) ? "0px" : window.visualViewport.width-cs.height+"px";
+            participant.style.left= window.visualViewport.height-cs.width+"px";
+        }
+        
         // participant.style.left = fourCorners[(count+1)%3];
-        console.log(participant.style.top + ", " + participant.style.left);
+        console.log(cs.width + ", " + cs.top);
         count++;
         // count %= 2;
-        // modeBtn.innerHTML = count;
+        
         Draggable.get(participant)?.update();
     });
+
+    modeBtn.innerHTML = (modeCount+1)%3;
 }
 
 function requestSync() {
