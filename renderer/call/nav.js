@@ -4,9 +4,10 @@ import setupDraggableElement from './drag.js';
 
 // control panels and related elements
 // call controls, device toggles
-const toggleCamBtn = document.getElementById('toggleCam');
-const toggleMicBtn = document.getElementById('toggleMic');
-const toggleBlurBtn = document.getElementById('toggleBlur');
+// const toggleCamBtn = document.getElementById('toggleCam');
+// const toggleMicBtn = document.getElementById('toggleMic');
+// const toggleBlurBtn = document.getElementById('toggleBlur');
+// import { toggleCamBtn, toggleMicBtn } from '../tray/palette.js';
 const callControls = document.getElementById('callControls');
 const callControlsDraggable = setupDraggableElement(callControls);
 
@@ -15,7 +16,7 @@ const callControlsDraggable = setupDraggableElement(callControls);
 // const roomControls = document.getElementById('roomControls');
 // const roomControlsDraggable = setupDraggableElement(roomControls);
 
-const mainControls = document.getElementById('mainControls');
+// const mainControls = document.getElementById('mainControls');
 // const mainControlsDraggable = setupDraggableElement(mainControls);
 
 // avatar controls
@@ -33,7 +34,7 @@ export function registerJoinListener(f) {
       .then((joined) => {
         api.callJoinUpdate(joined);
         if (joined) {
-          updateClipboardBtnClick(url);
+          // updateClipboardBtnClick(url);
         }
       })
       .catch(() => api.callJoinUpdate(false));
@@ -45,23 +46,23 @@ export function registerLeaveBtnListener(f) {
   const leave = () => {
     f();
     api.leftCall();
-    updateClipboardBtnClick(null);
+    // updateClipboardBtnClick(null);
   };
   leaveBtn.addEventListener(clickEvent, leave);
   window.addEventListener('leave-call', leave);
 }
 
-export function registerCamBtnListener(f) {
-  toggleCamBtn.addEventListener(clickEvent, f);
-}
+// export function registerCamBtnListener(f) {
+//   toggleCamBtn.addEventListener(clickEvent, f);
+// }
 
-export function registerMicBtnListener(f) {
-  toggleMicBtn.addEventListener(clickEvent, f);
-}
+// export function registerMicBtnListener(f) {
+//   toggleMicBtn.addEventListener(clickEvent, f);
+// }
 
-export function registerBlurBtnListener(f) {
-  toggleBlurBtn.addEventListener(clickEvent, f);
-}
+// export function registerBlurBtnListener(f) {
+//   toggleBlurBtn.addEventListener(clickEvent, f);
+// }
 
 export function updateCallControls(inCall) {
   const controls = document.getElementById('callControls');
@@ -110,18 +111,18 @@ export function updateMicBtn(micOn) {
   }
 }
 
-export function updateBlurBtn(blurOn) {
-  const off = 'blur-off';
-  const on = 'blur-on';
-  if (blurOn && !toggleBlurBtn.classList.contains(on)) {
-    toggleBlurBtn.classList.remove(off);
-    toggleBlurBtn.classList.add(on);
-  }
-  if (!blurOn && !toggleBlurBtn.classList.contains(off)) {
-    toggleBlurBtn.classList.remove(on);
-    toggleBlurBtn.classList.add(off);
-  }
-}
+// export function updateBlurBtn(blurOn) {
+//   const off = 'blur-off';
+//   const on = 'blur-on';
+//   if (blurOn && !toggleBlurBtn.classList.contains(on)) {
+//     toggleBlurBtn.classList.remove(off);
+//     toggleBlurBtn.classList.add(on);
+//   }
+//   if (!blurOn && !toggleBlurBtn.classList.contains(off)) {
+//     toggleBlurBtn.classList.remove(on);
+//     toggleBlurBtn.classList.add(off);
+//   }
+// }
 
 function updateClipboardBtnClick(callURL) {
   const clipboardBtn = document.getElementById('clipboard');

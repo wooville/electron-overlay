@@ -19,7 +19,7 @@ const {
 } = require('electron');
 
 const path = require('path');
-const positioner = require('electron-traywindow-positioner');
+// const positioner = require('electron-traywindow-positioner');
 
 const devMode = app.commandLine.hasSwitch('dev');
 
@@ -33,63 +33,87 @@ let trayView = null;
 let tray = null;
 let mousePos = null;
 
+
 // app.on('ready', () => {
 //   let mousePos = screen.getCursorScreenPoint();
 //   console.log(mousePos);
 // });
 
-// function createControlPanel() {
-//   // Create the window that opens on app start
-//   // and tray click
-//   controlWindow = new BaseWindow({
-//     parent: roomWindow,
-//     title: 'Control Panel',
-//     // webPreferences: {
-//     //   preload: path.join(__dirname, 'preloadTray.js'),
-//     // },
-//     width: 360,
-//     height: 360,
-//     show: true,
-//     // frame: false,
-//     autoHideMenuBar: true,
-//     setVisibleOnAllWorkspaces: true,
-//     // transparent: true,
-//     // skipTaskbar: true,
-//     hasShadow: false,
-//     // resizable: false,
-//     // modal: true,
-//   });
+function createPaletteWindow() {
+  // Create the window that opens on app start
+  // and tray click
+  paletteWindow = new BaseWindow({
+    parent: webstratesWindow,
+    title: 'Palette Window',
+    // webPreferences: {
+    //   preload: path.join(__dirname, 'preloadTray.js'),
+    // },
+    width: 480,
+    height: 800,
+    show: true,
+    // fullscreenable: false,
+    // frame: false,
+    // autoHideMenuBar: true,
+    setVisibleOnAllWorkspaces: true,
+    // transparent: true,
+    // skipTaskbar: true,
+    // hasShadow: false,
+    // resizable: false,
+    // modal: true,
+  });
 
-//   // preventRefresh(trayWindow);
+  // preventRefresh(trayWindow);
 
-//   trayView = new WebContentsView({
-//     webPreferences: {
-//       preload: path.join(__dirname, 'preloadTray.js'),
-//     }
-//   });
-//   trayView.webContents.loadFile('tray_simple.html');
-//   trayView.setBounds({ x: 0, y: 0, width: 290, height: 300 })
-//   trayWindow.contentView.addChildView(trayView);
+  paletteView = new WebContentsView({
+    webPreferences: {
+      preload: path.join(__dirname, 'preloadPalette.js'),
+    }
+  });
+  paletteView.webContents.loadFile('palette.html');
+  paletteView.setBounds({ x: 0, y: 0, width: paletteWindow.getBounds().width, height: paletteWindow.getBounds().height })
+  paletteWindow.contentView.addChildView(paletteView);
 
-//   trayWindow.on('blur', () => {
-//     // trayWindow.hide();
-//   });
-//   trayWindow.on('show', () => {
-//     // positioner.position(trayWindow, tray.getBounds());
-//     trayWindow.focus();
-//   });
-//   trayView.webContents.once('dom-ready', () => {
-//     trayWindow.show();
-//   });
-//   trayView.webContents.on('new-window', (e, url) => {
-//     e.preventDefault();
-//     shell.openExternal(url);
-//   });
+  paletteWindow.on('will-resize', (e, newBounds, details) => {
+    paletteView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+    // roomView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+  })
+  paletteWindow.on('resize', () => {
+    paletteView.setBounds({ x: 0, y: 0, width: paletteWindow.getBounds().width, height: paletteWindow.getBounds().height });
+    // roomView.setBounds({ x: 0, y: 0, width: roomView.getBounds().width, height: roomView.getBounds().height });
+  })
 
-//   trayWindow.on('closed', () => {
-//     trayView.webContents.close()
-//   })
-// }
+  let level = 'normal';
+  // Mac OS requires a different level for our drag/drop and overlay
+  // functionality to work as expected.
+  if (process.platform === 'darwin') {
+    level = 'floating';
+  };
+
+  // paletteWindow.setAlwaysOnTop(true, level);
+
+  // paletteWindow.on('blur', () => {
+  //   // paletteWindow.hide();
+  // });
+  // paletteWindow.on('show', () => {
+  //   // positioner.position(paletteWindow, tray.getBounds());
+  //   paletteWindow.focus();
+  // });
+  // paletteWindow.webContents.once('dom-ready', () => {
+  //   paletteWindow.show();
+  // });
+  // paletteView.webContents.on('new-window', (e, url) => {
+  //   e.preventDefault();
+  //   shell.openExternal(url);
+  // });
+
+  paletteWindow.on('closed', () => {
+    paletteView.webContents.close()
+  });
+
+  
+  
+
+}
 
 function createTrayWindow() {
   // Create the window that opens on app start
@@ -140,7 +164,7 @@ function createTrayWindow() {
   });
 
   trayWindow.on('closed', () => {
-    trayView.webContents.close()
+    trayView.webContents?.close()
   })
 }
 
@@ -168,13 +192,15 @@ function createWebstratesWindow() {
     }
   });
   webstratesView.webContents.loadURL(webstratesURL);
-  webstratesView.webContents.setBackgroundThrottling(false);
+  // webstratesView.webContents.setBackgroundThrottling(false);
   webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height })
   webstratesWindow.contentView.addChildView(webstratesView);
+  
+  // webstratesWindow.on("toggleDevTools")
 
   if (devMode) {
     // roomWindow.show();
-    // webstratesView.webContents.openDevTools();
+    webstratesView.webContents.openDevTools();
     // roomView.webContents.openDevTools();
   }
 
@@ -182,24 +208,24 @@ function createWebstratesWindow() {
 
   // Upper Limit is working of 500 %
   webstratesView.webContents
-      .setVisualZoomLevelLimits(1, 5)
-      .then(console.log("Zoom Levels Have been Set between 100% and 500%"))
+      .setVisualZoomLevelLimits(1, 4)
+      .then(console.log("Zoom factor set between 100% and 400%"))
       .catch((err) => console.log(err));
 
   webstratesView.webContents.on("zoom-changed", (event, zoomDirection) => {
       console.log(zoomDirection);
       var currentZoom = webstratesView.webContents.getZoomFactor();
-      console.log("Current Zoom Factor - ", currentZoom);
+      console.log("Current zoom factor - ", currentZoom);
       // console.log('Current Zoom Level at - '
       // , win.webContents.getZoomLevel());
-      console.log("Current Zoom Level at - ", webstratesView.webContents.zoomLevel);
+      console.log("Current zoom level - ", webstratesView.webContents.zoomLevel);
 
       if (zoomDirection === "in") {
         
           // win.webContents.setZoomFactor(currentZoom + 0.20);
           webstratesView.webContents.zoomFactor = currentZoom + 0.1;
 
-          console.log("Zoom Factor Increased to - "
+          console.log("Zoom factor increased to - "
                       , webstratesView.webContents.zoomFactor * 100, "%");
       }
       if (zoomDirection === "out") {
@@ -207,12 +233,10 @@ function createWebstratesWindow() {
           // win.webContents.setZoomFactor(currentZoom - 0.20);
           webstratesView.webContents.zoomFactor = currentZoom - 0.1;
 
-          console.log("Zoom Factor Decreased to - "
+          console.log("Zoom factor decreased to - "
                       , webstratesView.webContents.zoomFactor * 100, "%");
       }
   });
-
-
   
   // roomView.addChildView(webstrateView);
 
@@ -234,8 +258,14 @@ function createWebstratesWindow() {
   })
   webstratesWindow.on('closed', () => {
     webstratesView.webContents.close()
-    roomView.webContents.close()
+    // roomView.webContents.close()
   })
+
+  // setupContextMenu(true);
+
+  // webstratesView.on('right-click', () => {
+  //   webstratesView.popUpContextMenu(webstratesView.contextMenu);
+  // });
 }
 
 function createRoomWindow() {
@@ -243,16 +273,16 @@ function createRoomWindow() {
   roomWindow = new BaseWindow({
     parent: webstratesWindow,
     title: 'Video Overlay',
-    // useContentSize: true,
+    useContentSize: true,
     // width: 1280,
     // height: 960,
-    fullscreen: true,
-    frame: false,
-    autoHideMenuBar: false,
-    transparent: true,
+    // fullscreen: true,
+    // frame: false,
+    // autoHideMenuBar: false,
+    // transparent: true,
     skipTaskbar: true,
-    hasShadow: false,
-    // resizable: false,
+    // hasShadow: false,
+    resizable: true,
     // Don't show the window until the user is in a call.
     // show: false,
   });
@@ -271,7 +301,7 @@ function createRoomWindow() {
     }
   });
   roomView.webContents.loadFile('index.html');
-  roomView.webContents.setBackgroundThrottling(false);
+  // roomView.webContents.setBackgroundThrottling(false);
   roomView.setBackgroundColor("#00000000");
   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height })
   
@@ -292,15 +322,14 @@ function createRoomWindow() {
   // })
   roomWindow.on('closed', () => {
     roomView.webContents.close()
-    trayView.webContents.close()
   })
 
   if (devMode) {
     // roomWindow.show();
     // webstratesView.webContents.openDevTools();
-    roomView.webContents.openDevTools();
+    // roomView.webContents.openDevTools();
   } else {
-    roomWindow.setIgnoreMouseEvents(true, { forward: true });
+    // roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }
   roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
@@ -355,9 +384,11 @@ function createRoomWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWebstratesWindow();
+  createPaletteWindow();
+  
   createRoomWindow();
-  createTrayWindow();
-  setupTray();
+  // createTrayWindow();
+  // setupTray();
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -391,6 +422,34 @@ function setupTray() {
   tray.on('right-click', () => {
     tray.popUpContextMenu(tray.contextMenu);
   });
+}
+
+function setupContextMenu(inPlayground) {
+  const menuItems = [];
+
+  // If the user is in a call, allow them to leave the call
+  // via the context menu
+  if (inPlayground) {
+    const item = new MenuItem({
+      label: 'Leave Call',
+      type: 'normal',
+      click() {
+        roomView.webContents.send('leave-call');
+      },
+    });
+    menuItems.push(item);
+  }
+  const exitItem = new MenuItem({
+    label: 'Quit',
+    type: 'normal',
+    click() {
+      app.quit();
+    },
+  });
+  menuItems.push(exitItem);
+
+  const contextMenu = Menu.buildFromTemplate(menuItems);
+  webstratesView.contextMenu = contextMenu;
 }
 
 function setupTrayMenu(inCall) {
@@ -474,7 +533,7 @@ ipcMain.handle('left-call', () => {
 // in the call window.
 ipcMain.handle('set-ignore-mouse-events', (e, ...args) => {
   // const win = BrowserWindow.fromWebContents(e.sender);
-  roomWindow.setIgnoreMouseEvents(...args);
+  // roomWindow.setIgnoreMouseEvents(...args);
 });
 
 ipcMain.handle('close-app', () => {
@@ -502,11 +561,34 @@ ipcMain.handle('request-sync', (e, args) => {
 
 ipcMain.handle('request-presets', (e, args) => {
   // webstratesView.webContents.executeJavaScript("openSettings();");
-  webstratesView.webContents.executeJavaScript("setupRoomPreset(1);");
+  // webstratesView.webContents.executeJavaScript("setupRoomPreset(6);");
 });
 ipcMain.handle('request-edit', (e, args) => {
   webstratesView.webContents.executeJavaScript("toggleEdit();");
 });
 ipcMain.handle('refresh-page', (e, args) => {
   webstratesView.webContents.reload();
+});
+ipcMain.handle('page-back', (e, args) => {
+  const { navigationHistory } = webstratesView.webContents;
+  // Go back
+  if (navigationHistory.canGoBack()) {
+    navigationHistory.goBack()
+  }
+});
+ipcMain.handle('page-forward', (e, args) => {
+  const { navigationHistory } = webstratesView.webContents;
+  // Go forward
+  if (navigationHistory.canGoForward()) {
+    navigationHistory.goForward()
+  }
+});
+ipcMain.handle('page-go', (e, args) => {
+  webstratesView.webContents.loadURL(args.url);
+});
+ipcMain.handle('page-home', (e, args) => {
+  webstratesView.webContents.loadURL(webstratesURL);
+});
+ipcMain.handle('page-dev', (e, args) => {
+  webstratesView.webContents.toggleDevTools();
 });

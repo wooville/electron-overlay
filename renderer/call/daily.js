@@ -1,16 +1,16 @@
 // daily.js contains all DailyJS listeners and call joining/leaving logic.
 
-import {
-  registerJoinListener,
-  registerLeaveBtnListener,
-  registerCamBtnListener,
-  registerMicBtnListener,
-  updateCamBtn,
-  updateCallControls,
-  updateMicBtn,
-  registerBlurBtnListener,
-  updateBlurBtn,
-} from './nav.js';
+// import {
+//   registerJoinListener,
+//   registerLeaveBtnListener,
+//   registerCamBtnListener,
+//   registerMicBtnListener,
+//   updateCamBtn,
+//   updateMicBtn,
+//   // updateCallControls,
+//   // registerBlurBtnListener,
+//   // updateBlurBtn,
+// } from './nav.js';
 import {
   addOrUpdateTile,
   removeAllTiles,
@@ -20,6 +20,15 @@ import {
 import {
   specialUserName
 } from '../space/room.js'
+import {
+  registerJoinListener,
+  registerLeaveBtnListener,
+  registerCamBtnListener,
+  registerMicBtnListener,
+  updateCamBtn,
+  updateMicBtn,
+  updateCallControlsPalette,
+} from '../tray/palette.js'
 // import {
 //   drawLine
 // } from '../lines/lines.js';
@@ -37,7 +46,7 @@ registerJoinListener(initAndJoin);
 registerLeaveBtnListener(leave);
 registerCamBtnListener(toggleCamera);
 registerMicBtnListener(toggleMicrophone);
-registerBlurBtnListener(toggleBlur);
+// registerBlurBtnListener(toggleBlur);
 
 async function initAndJoin(roomURL, name) {
   callObject = DailyIframe.createCallObject({
@@ -62,7 +71,7 @@ async function initAndJoin(roomURL, name) {
     .on('participant-joined', handleParticipantJoined)
     .on('participant-left', handleParticipantLeft)
     .on('active-speaker-change', handleActiveSpeakerChange)
-    .on('input-settings-updated', handleInputSettingsChange);
+    // .on('input-settings-updated', handleInputSettingsChange);
 
   return callObject
     .join({ url: roomURL, userName: name })
@@ -116,14 +125,16 @@ function handleError(event) {
 }
 
 function handleJoinedMeeting(event) {
-  updateCallControls(true);
+  // updateCallControls(true);
+  updateCallControlsPalette(true);
   const p = event.participants.local;
   updateLocal(p);
 
 }
 
 function handleLeftMeeting() {
-  updateCallControls(false);
+  // updateCallControls(false);
+  updateCallControlsPalette(false);
   removeAllTiles();
 }
 
@@ -164,11 +175,11 @@ function handleActiveSpeakerChange(event) {
   updateActiveSpeaker(event.activeSpeaker.peerId);
 }
 
-function handleInputSettingsChange(event) {
-  localState.blur =
-    event.inputSettings?.video?.processor?.type === 'background-blur';
-  updateBlurBtn(localState.blur);
-}
+// function handleInputSettingsChange(event) {
+//   localState.blur =
+//     event.inputSettings?.video?.processor?.type === 'background-blur';
+//   updateBlurBtn(localState.blur);
+// }
 
 function updateLocal(p) {
   if (localState.audio !== p.audio) {

@@ -1,15 +1,15 @@
 import { addOrUpdateTile } from "../call/tile.js";
 
 const wrapper = document.getElementById('wrapper');
-const webstrates = document.getElementById('webstrates');
+// const webstrates = document.getElementById('webstrates');
 // const toggleRoomBtn = document.getElementById('toggleRoom');
 // const applyColorBtn = document.getElementById('applyColor');
 // const roomLayer0 = document.getElementById('roomLayer0');
 
-const syncBtn = document.getElementById('syncBtn');
-const presetsBtn = document.getElementById('presetsBtn');
-const editBtn = document.getElementById('editBtn');
-const refreshBtn = document.getElementById('refreshBtn');
+// const syncBtn = document.getElementById('syncBtn');
+// const presetsBtn = document.getElementById('presetsBtn');
+// const editBtn = document.getElementById('editBtn');
+// const refreshBtn = document.getElementById('refreshBtn');
 
 let clickEvent = 'click';
 export const specialUserName = 'admin'
@@ -30,10 +30,10 @@ export const specialUserName = 'admin'
 
 // toggleRoomBtn.addEventListener(clickEvent, toggleRoom);
 // applyColorBtn.addEventListener(clickEvent, applyColor);
-syncBtn.addEventListener(clickEvent, requestSync);
-presetsBtn.addEventListener(clickEvent, requestPresets);
-editBtn.addEventListener(clickEvent, requestEdit);
-refreshBtn.addEventListener(clickEvent, refreshPage);
+// syncBtn.addEventListener(clickEvent, requestSync);
+// presetsBtn.addEventListener(clickEvent, requestPresets);
+// editBtn.addEventListener(clickEvent, requestEdit);
+// refreshBtn.addEventListener(clickEvent, refreshPage);
 addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 // webstrate.webstrate.on("transcluded", function (webstrateId, clientId, user) {
 //     // The webstrate client in the iframe has now finished loading.

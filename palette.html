@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /> -->
+  <link href="./paletteStyles.css" rel="stylesheet" />
+  <link href="./settingsStyles.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="callControlsPalette" class="bar controls-on calling">
+    <h1>CALL</h1>
+    <button id="toggleSelfTile">Toggle Self Tile</button>
+    <form id="enterCall">
+      <span class="formContainer">
+            <label>Name:</label>
+            <input type="text" id="participantName" value="Participant" required />
+      </span>
+      <button type="submit">Join Call</button>
+    </form>
+    <div id="inCall">
+      <button id="leave">Leave Call</button>
+      <button id="toggleCam">Camera</button>
+      <button id="toggleMic">Mic</button>
+    </div>
+  </div>
+
+  <div class="bar controls-on">
+    <h1>NAVIGATION</h1>
+    <button id="quitBtn" class="settings-button">QUIT</button>
+    <button id="homeBtn" class="settings-button">HOME</button>
+    <button id="backBtn" class="settings-button">BACK</button>
+    <button id="forwardBtn" class="settings-button">FWD</button>
+    <button id="refreshBtn" class="settings-button">REFRESH</button>
+    <button id="devBtn" class="settings-button">DEV</button>
+  </div>
+
+  <div id="arrangeControlsPalette" class="bar controls-on">
+    <h1>ARRANGE</h1>
+    <!-- <label for="mode">Mode:</label> -->
+
+    <!-- <select name="mode" id="mode">
+      <option value="modeClose">Tile</option>
+      <option value="modeNear">Near</option>
+      <option value="modeFar">Far</option>
+    </select>  -->
+    <button id="modeBtn" class="settings-button">MODE</button>
+    <h3>Near</h3>
+  </div>
+
+  <!-- <div class="bar bar-3">
+    <div class="icon icon-1"></div>
+    <div class="icon icon-2"></div>
+    <div class="icon icon-3"></div>
+    <div class="username">
+      John Jacob Jingleheimer Smith
+    </div>
+    <div class="search">
+      <input type="search" placeholder="search..." />
+    </div>
+  </div> -->
+  <script src="renderer/tray/palette.js"></script>
+</body>
+
+</html>
