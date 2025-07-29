@@ -23,7 +23,7 @@ const path = require('path');
 
 const devMode = app.commandLine.hasSwitch('dev');
 
-const webstratesURL = 'https://videoplayground.xyz/jolly-duck-7/';
+const webstratesURL = 'https://videoplayground.xyz/new-falcon-26/';
 // const ll = require('leader-line');
 
 let roomWindow = null;
@@ -396,6 +396,7 @@ app.whenReady().then(() => {
   createRoomWindow();
   // createTrayWindow();
   // setupTray();
+  readInputs();
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -500,6 +501,35 @@ function preventRefresh(window) {
   });
 }
 
+function readInputs(){
+  globalShortcut.register('W', () => { 
+    // console.log('W');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'W'}); });
+  globalShortcut.register('A', () => { 
+    // console.log('A');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'A'}); });
+  globalShortcut.register('S', () => { 
+    // console.log('S');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'S'}); });
+  globalShortcut.register('D', () => { 
+    // console.log('D');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'D', shiftKey: true}); });
+
+  globalShortcut.register('Shift+W', () => { 
+    // console.log('W');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'W'}); });
+  globalShortcut.register('Shift+A', () => { 
+    // console.log('A');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'A'}); });
+  globalShortcut.register('Shift+S', () => { 
+    // console.log('S');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'S'}); });
+  globalShortcut.register('Shift+D', () => { 
+    // console.log('D');
+    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'D'}); });
+  
+}
+
 // Our custom API handlers are defined below.
 
 // When a user fills in the call form from the tray window,
@@ -601,7 +631,7 @@ ipcMain.handle('page-dev', (e, args) => {
   webstratesView.webContents.toggleDevTools();
 });
 ipcMain.handle('send-input-event', (e, inputEvent) => {
-  console.log(inputEvent);
+  if (inputEvent.type != 'mouseMove') console.log(inputEvent);
   webstratesView.webContents.focus();
   webstratesView.webContents.sendInputEvent(inputEvent);
 });

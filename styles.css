@@ -94,6 +94,13 @@ body {
   visibility: visible;
 }
 
+.clickthrough:hover {
+  visibility: hidden;
+}
+
+.hide {
+  display:none;
+}
 
 #cursorIcon {
   height: 1em;

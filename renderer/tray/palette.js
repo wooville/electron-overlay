@@ -15,7 +15,8 @@ const entryID = 'entry';
 const inCallID = 'inCall';
 
 const participantName = document.getElementById('participantName');
-const toggleSelfTile = document.getElementById('toggleSelfTile');
+const toggleSeeMyselfBtn = document.getElementById('toggleSeeMyself');
+const toggleClickableTilesBtn = document.getElementById('toggleClickableTiles');
 const joinForm = document.getElementById('enterCall');
 const toggleCamBtn = document.getElementById('toggleCam');
 const toggleMicBtn = document.getElementById('toggleMic');
@@ -73,6 +74,18 @@ function resetPalette() {
   const wrapper = document.getElementById('callControlsPalette');
   wrapper.classList.remove(inCallID);
   wrapper.classList.add(entryID);
+}
+
+export function registerSeeMyselfBtnListener(f) {
+  // const toggleSeeMyselfBtn = document.getElementById('toggleSeeMyself');
+  console.log(toggleSeeMyselfBtn);
+  if (toggleSeeMyselfBtn) toggleSeeMyselfBtn.addEventListener('click', f);
+}
+
+export function registerClickableTilesBtnListener(f) {
+  // const toggleClickableTilesBtn = document.getElementById('toggleClickableTiles');
+  console.log(toggleClickableTilesBtn);
+  if (toggleClickableTilesBtn) toggleClickableTilesBtn.addEventListener('click', f);
 }
 
 export function registerCamBtnListener(f) {
@@ -134,7 +147,6 @@ export function updateMicBtn(micOn) {
     toggleMicBtn.classList.add(off);
   }
 }
-
 function setupInCallView(callURL) {
   const entry = document.getElementById(entryID);
   const inCall = document.getElementById(inCallID);
@@ -181,6 +193,7 @@ if (joinForm) joinForm.addEventListener('submit', (event) => {
   api.joinCall(callURL, participantName.value);
   setupInCallView(callURL);
 });
+
 
 if (quitBtn) quitBtn.addEventListener('click', () => {
   api.close();

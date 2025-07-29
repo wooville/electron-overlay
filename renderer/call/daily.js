@@ -1,13 +1,13 @@
 // daily.js contains all DailyJS listeners and call joining/leaving logic.
 
 import {
-  //   registerJoinListener,
-  //   registerLeaveBtnListener,
-  //   registerCamBtnListener,
-  //   registerMicBtnListener,
-  //   updateCamBtn,
-  //   updateMicBtn,
-  //   updateCallControls,
+    // registerJoinListener,
+    // registerLeaveBtnListener,
+    // registerCamBtnListener,
+    // registerMicBtnListener,
+    // updateCamBtn,
+    // updateMicBtn,
+    updateCallControls,
   //   //   // registerBlurBtnListener,
   //   //   // updateBlurBtn,
 } from './nav.js';
@@ -25,6 +25,8 @@ import {
   registerLeaveBtnListener,
   registerCamBtnListener,
   registerMicBtnListener,
+  // registerSeeMyselfBtnListener,
+  // registerClickableTilesBtnListener,
   updateCamBtn,
   updateMicBtn,
   updateCallControlsPalette,
@@ -46,6 +48,8 @@ registerJoinListener(initAndJoin);
 registerLeaveBtnListener(leave);
 registerCamBtnListener(toggleCamera);
 registerMicBtnListener(toggleMicrophone);
+// registerSeeMyselfBtnListener(toggleSeeMyself);
+// registerClickableTilesBtnListener(toggleClickableTiles);
 // registerBlurBtnListener(toggleBlur);
 
 async function initAndJoin(roomURL, name) {
@@ -193,3 +197,18 @@ function updateLocal(p) {
   const tracks = getParticipantTracks(p);
   addOrUpdateTile(specialUserName, specialUserName, tracks.video, tracks.audio, true);
 }
+
+// function toggleSeeMyself() {
+//   const tiles = document.querySelectorAll(".tile.localUser");
+//   tiles.forEach(function (tile) {
+//     tile.classList.toggle("hide");
+//   });
+// }
+
+// function toggleClickableTiles() {
+//   const tiles = document.querySelectorAll(".participant");
+//   console.log(tiles.length);
+//   tiles.forEach(function (tile) {
+//     tile.classList.toggle("clickthrough");
+//   });
+// }

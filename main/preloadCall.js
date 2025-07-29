@@ -70,9 +70,12 @@ contextBridge.exposeInMainWorld('api', {
   sendMouseUp: (x, y) => {
     ipcRenderer.invoke('send-input-event', { type: 'mouseUp', x: x, y: y });
   },
-  sendScroll: (x, y) => {
-    ipcRenderer.invoke('send-input-event', { type: 'scroll', scrollX: x, y: y });
+  sendMouseWheel: (deltaX, deltaY) => {
+    ipcRenderer.invoke('send-input-event', { type: 'mouseWheel', deltaX: deltaX, deltaY: deltaY });
   },
+  // sendKeyDown: (keyDown) => {
+  //   ipcRenderer.invoke('send-input-event', { type: 'keyDown', keyDown: keyDown });
+  // },
   leftCall: () => {
     ipcRenderer.invoke('left-call');
   },

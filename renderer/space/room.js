@@ -2,7 +2,7 @@ import { addOrUpdateTile } from "../call/tile.js";
 
 const wrapper = document.getElementById('wrapper');
 // const webstrates = document.getElementById('webstrates');
-// const toggleRoomBtn = document.getElementById('toggleRoom');
+const modeBtn = document.getElementById('modeBtn');
 // const applyColorBtn = document.getElementById('applyColor');
 // const roomLayer0 = document.getElementById('roomLayer0');
 
@@ -14,11 +14,70 @@ const wrapper = document.getElementById('wrapper');
 let clickEvent = 'click';
 export const specialUserName = 'admin'
 
+  const wrapperObserver = new MutationObserver(function(mutations) {
+    // check every detected mutation inside of wrapper wrapper and handle accordingly
+    mutations.forEach(function(mutation) {
+      switch (mutation.type) {
+        case "childList":
+          //setup new nodes
+        //   handleMutationNodeAddRemove(mutation);
+          break;
+        case "attributes":
+          switch (mutation.attributeName) {
+            case "class":
+//               handleMutationEdit(mutation);
+              handleMutationClickableTiles(mutation);
+              break;
+          }
+          break;
+      }
+    });
+  });
+
+//   function handleMutationNodeAddRemove(mutation){
+//     mutation.addedNodes.forEach(function(newElement) {
+//       setupElement(newElement);
+//       setupMediaPlaybackSync(newElement);
+//     });
+//   }
+  
+//   function handleMutationEdit(mutation){
+//     if (mutation.oldValue.includes("edit") != mutation.target.className.includes("edit")) {
+// //       console.log("edit toggle");
+//       setupAllElements();
+//     }
+//   }
+
+  function handleMutationClickableTiles(mutation) {
+    // check draggable locks
+    if (mutation.target.classList.contains('tile') && mutation.target.classList.contains('clickthrough')){
+      //         console.log("lock");
+      var drag = Draggable.get(mutation.target);
+      if (drag) drag.disable();
+    } else if (mutation.target.className.includes("clickable")){
+      //         Draggable.get(mutation.target.id).enable();
+      var drag = Draggable.get(mutation.target);
+      if (drag) drag.enable();
+    }
+  }
+
+  wrapperObserver.observe(wrapper, {
+    childList: true, // observe direct children
+    subtree: true,
+    //     characterDataOldValue: true // pass old data to callback
+    attributes: true,
+//     attributeOldValue: true,
+    attributeFilter: ['class']
+  });
+
 // electron.screen.getCursorScreenPoint();
 document.onmousemove = (event) => { api.sendMouseMove(event.x, event.y); }
-document.onclick = (event) => { api.sendMouseDown(event.x, event.y); }
+// document.onclick = (event) => { api.sendClick(event.x, event.y); }
+document.onmousedown = (event) => { api.sendMouseDown(event.x, event.y); }
 document.onmouseup = (event) => { api.sendMouseUp(event.x, event.y); }
-document.onscroll = (event) => { api.sendScroll(event.x, event.y); }
+document.onmousewheel = (event) => { api.sendMouseWheel(event.deltaX, event.deltaY); }
+
+// window.onkeydown = (event) => { api.sendKeyDown(event.keyDown); }
 // remote.getCurrentWebContents().sendInputEvent({ type: 'mouseMove', x: 10, y: 10 })
 
 // window.addEventListener('focus', () => {
@@ -35,7 +94,7 @@ document.onscroll = (event) => { api.sendScroll(event.x, event.y); }
 //     // callWindow.transparent = true;
 // });
 
-// toggleRoomBtn.addEventListener(clickEvent, toggleRoom);
+modeBtn.addEventListener(clickEvent, changeMode);
 // applyColorBtn.addEventListener(clickEvent, applyColor);
 // syncBtn.addEventListener(clickEvent, requestSync);
 // presetsBtn.addEventListener(clickEvent, requestPresets);
@@ -49,6 +108,39 @@ addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 // setupParticipantCursor(p);
 
 // registerToggleRoomListener(toggleRoom);
+
+function toggleSeeMyself() {
+    const tiles = document.querySelectorAll(".tile.localUser");
+    tiles.forEach(function (tile) {
+        tile.classList.toggle("hide");
+    });
+}
+
+function toggleClickableTiles() {
+    const participants = document.querySelectorAll(".participant");
+    console.log(participants.length);
+    participants.forEach(function (participant) {
+        participant.classList.toggle("clickthrough");
+    });
+}
+
+function changeMode() {
+    var count = 0;
+    // const nearX=["0px", window.visualViewport.width+"px"];
+    // const nearY=["0px", window.visualViewport.height+"px"];
+    const participants = document.querySelectorAll(".participant");
+
+    participants.forEach(function (participant) {
+        participant.style.left= (count%2===0) ? "0px" : window.visualViewport.width-320+"px";
+        participant.style.top = window.visualViewport.height-320+"px";
+        // participant.style.left = fourCorners[(count+1)%3];
+        console.log(participant.style.top + ", " + participant.style.left);
+        count++;
+        // count %= 2;
+        // modeBtn.innerHTML = count;
+        Draggable.get(participant)?.update();
+    });
+}
 
 function requestSync() {
     // const seats = webstrate.contentWindow.document.querySelectorAll(".draggable");

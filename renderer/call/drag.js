@@ -88,6 +88,7 @@
 
     Draggable.create(element, {
       bounds: container,
+      type: "left,top",
       autoScroll: 1,
       inertia: true,
     });
