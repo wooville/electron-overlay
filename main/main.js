@@ -23,7 +23,7 @@ const path = require('path');
 
 const devMode = app.commandLine.hasSwitch('dev');
 
-const webstratesURL = 'https://videoplayground.xyz/frontpage/';
+const webstratesURL = 'https://videoplayground.xyz/jolly-duck-7/';
 // const ll = require('leader-line');
 
 let roomWindow = null;
@@ -82,12 +82,16 @@ function createPaletteWindow() {
     // roomView.setBounds({ x: 0, y: 0, width: roomView.getBounds().width, height: roomView.getBounds().height });
   })
 
+  // if (devMode) paletteView.webContents.openDevTools();
+
   let level = 'normal';
   // Mac OS requires a different level for our drag/drop and overlay
   // functionality to work as expected.
   if (process.platform === 'darwin') {
     level = 'floating';
   };
+
+
 
   // paletteWindow.setAlwaysOnTop(true, level);
 
@@ -110,8 +114,8 @@ function createPaletteWindow() {
     paletteView.webContents.close()
   });
 
-  
-  
+
+
 
 }
 
@@ -195,12 +199,12 @@ function createWebstratesWindow() {
   // webstratesView.webContents.setBackgroundThrottling(false);
   webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height })
   webstratesWindow.contentView.addChildView(webstratesView);
-  
+
   // webstratesWindow.on("toggleDevTools")
 
   if (devMode) {
     // roomWindow.show();
-    webstratesView.webContents.openDevTools();
+    // webstratesView.webContents.openDevTools();
     // roomView.webContents.openDevTools();
   }
 
@@ -208,36 +212,36 @@ function createWebstratesWindow() {
 
   // Upper Limit is working of 500 %
   webstratesView.webContents
-      .setVisualZoomLevelLimits(1, 4)
-      .then(console.log("Zoom factor set between 100% and 400%"))
-      .catch((err) => console.log(err));
+    .setVisualZoomLevelLimits(1, 4)
+    .then(console.log("Zoom factor set between 100% and 400%"))
+    .catch((err) => console.log(err));
 
   webstratesView.webContents.on("zoom-changed", (event, zoomDirection) => {
-      console.log(zoomDirection);
-      var currentZoom = webstratesView.webContents.getZoomFactor();
-      console.log("Current zoom factor - ", currentZoom);
-      // console.log('Current Zoom Level at - '
-      // , win.webContents.getZoomLevel());
-      console.log("Current zoom level - ", webstratesView.webContents.zoomLevel);
+    console.log(zoomDirection);
+    var currentZoom = webstratesView.webContents.getZoomFactor();
+    console.log("Current zoom factor - ", currentZoom);
+    // console.log('Current Zoom Level at - '
+    // , win.webContents.getZoomLevel());
+    console.log("Current zoom level - ", webstratesView.webContents.zoomLevel);
 
-      if (zoomDirection === "in") {
-        
-          // win.webContents.setZoomFactor(currentZoom + 0.20);
-          webstratesView.webContents.zoomFactor = currentZoom + 0.1;
+    if (zoomDirection === "in") {
 
-          console.log("Zoom factor increased to - "
-                      , webstratesView.webContents.zoomFactor * 100, "%");
-      }
-      if (zoomDirection === "out") {
-        
-          // win.webContents.setZoomFactor(currentZoom - 0.20);
-          webstratesView.webContents.zoomFactor = currentZoom - 0.1;
+      // win.webContents.setZoomFactor(currentZoom + 0.20);
+      webstratesView.webContents.zoomFactor = currentZoom + 0.1;
 
-          console.log("Zoom factor decreased to - "
-                      , webstratesView.webContents.zoomFactor * 100, "%");
-      }
+      console.log("Zoom factor increased to - "
+        , webstratesView.webContents.zoomFactor * 100, "%");
+    }
+    if (zoomDirection === "out") {
+
+      // win.webContents.setZoomFactor(currentZoom - 0.20);
+      webstratesView.webContents.zoomFactor = currentZoom - 0.1;
+
+      console.log("Zoom factor decreased to - "
+        , webstratesView.webContents.zoomFactor * 100, "%");
+    }
   });
-  
+
   // roomView.addChildView(webstrateView);
 
   webstratesWindow.on('will-resize', (e, newBounds, details) => {
@@ -270,26 +274,26 @@ function createWebstratesWindow() {
 
 function createRoomWindow() {
   // Create the browser window.
-  roomWindow = new BaseWindow({
-    parent: webstratesWindow,
-    title: 'Video Overlay',
-    useContentSize: true,
-    // width: 1280,
-    // height: 960,
-    // fullscreen: true,
-    // frame: false,
-    // autoHideMenuBar: false,
-    // transparent: true,
-    skipTaskbar: true,
-    // hasShadow: false,
-    resizable: true,
-    // Don't show the window until the user is in a call.
-    // show: false,
-  });
+  // roomWindow = new BaseWindow({
+  //   parent: webstratesWindow,
+  //   title: 'Video Overlay',
+  //   useContentSize: true,
+  //   // width: 1280,
+  //   // height: 960,
+  //   fullscreen: true,
+  //   frame: false,
+  //   // autoHideMenuBar: false,
+  //   transparent: true,
+  //   skipTaskbar: true,
+  //   // hasShadow: false,
+  //   resizable: true,
+  //   // Don't show the window until the user is in a call.
+  //   // show: false,
+  // });
   // roomWindow = new BaseWindow({ width: 800, height: 400 })
 
   // preventRefresh(roomWindow);
-  
+
   // roomView.setBackgroundColor("#0FFF") // hex ARGB transparent background
   // console.log(roomWindow.getBounds().width)
   // roomView.webContents.loadFile('index.html');
@@ -303,10 +307,13 @@ function createRoomWindow() {
   roomView.webContents.loadFile('index.html');
   // roomView.webContents.setBackgroundThrottling(false);
   roomView.setBackgroundColor("#00000000");
-  roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height })
-  
+  roomView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height })
+
+
   // roomView.addChildView(webstrateView);
-  roomWindow.contentView.addChildView(roomView);
+  // roomWindow.contentView.addChildView(roomView);
+  webstratesWindow.contentView.addChildView(roomView);
+  if (devMode) roomView.webContents.openDevTools();
 
   // roomWindow.on('will-resize', (e, newBounds, details) => {
   //   roomView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
@@ -320,7 +327,7 @@ function createRoomWindow() {
   // roomWindow.on('exit-fullscreen', () => {
   //   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
   // })
-  roomWindow.on('closed', () => {
+  webstratesWindow.on('closed', () => {
     roomView.webContents.close()
   })
 
@@ -331,7 +338,7 @@ function createRoomWindow() {
   } else {
     // roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }
-  roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  // roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   let level = 'normal';
   // Mac OS requires a different level for our drag/drop and overlay
@@ -385,7 +392,7 @@ function createRoomWindow() {
 app.whenReady().then(() => {
   createWebstratesWindow();
   createPaletteWindow();
-  
+
   createRoomWindow();
   // createTrayWindow();
   // setupTray();
@@ -507,15 +514,16 @@ ipcMain.handle('join-call', (e, url, name) => {
 // the failure (if any) to the tray window, OR alternatively
 // maximize and focus the call window.
 ipcMain.handle('call-join-update', (e, joined) => {
+  console.log("update");
   if (!joined) {
-    trayView.webContents.send('join-failure');
-    trayWindow.show();
+    paletteView.webContents.send('join-failure');
+    paletteWindow.show();
     return;
   }
-  roomWindow.maximize();
-  setupTrayMenu(true);
-  roomWindow.show();
-  roomWindow.focus();
+  // roomWindow.maximize();
+  // setupTrayMenu(true);
+  // roomWindow.show();
+  // roomWindow.focus();
 });
 
 // When a user leaves a call, this handler will update
@@ -523,8 +531,8 @@ ipcMain.handle('call-join-update', (e, joined) => {
 // (so that the tray window can be updated to show the
 // join form once more)
 ipcMain.handle('left-call', () => {
-  setupTrayMenu(false);
-  trayView.webContents.send('left-call');
+  // setupTrayMenu(false);
+  paletteView.webContents.send('left-call');
   // roomWindow.hide();
 });
 
@@ -547,16 +555,16 @@ ipcMain.handle('request-sync', (e, args) => {
   // console.log(webstratesView.webContents.getURL());
   var webstrateClientId;
   webstratesView.webContents.executeJavaScript('webstrate.clientId', true)
-  .then((result) => {
-    webstrateClientId = result;
-    console.log(webstrateClientId);
+    .then((result) => {
+      webstrateClientId = result;
+      console.log(webstrateClientId);
 
-    webstratesView.webContents.executeJavaScript('document.getElementById("participantView-"+webstrate.clientId).style.height', true)
-      .then((result) => {
-        console.log(result)
-      });
-  });
-  
+      webstratesView.webContents.executeJavaScript('document.getElementById("participantView-"+webstrate.clientId).style.height', true)
+        .then((result) => {
+          console.log(result)
+        });
+    });
+
 });
 
 ipcMain.handle('request-presets', (e, args) => {
@@ -592,3 +600,11 @@ ipcMain.handle('page-home', (e, args) => {
 ipcMain.handle('page-dev', (e, args) => {
   webstratesView.webContents.toggleDevTools();
 });
+ipcMain.handle('send-input-event', (e, inputEvent) => {
+  console.log(inputEvent);
+  webstratesView.webContents.focus();
+  webstratesView.webContents.sendInputEvent(inputEvent);
+});
+
+
+// webstratesView.webContents.sendInputEvent({ type: 'mouseMove', x: 10, y: 10 })

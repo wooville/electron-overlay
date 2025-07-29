@@ -64,6 +64,7 @@ body {
   position: absolute;
   padding: 0px;
 }
+
 #wrapper .draggable:hover {
   border: 1px solid #aaa;
 }
@@ -76,7 +77,7 @@ body {
 }
 
 .resize-handle {
-  visibility:hidden;
+  visibility: hidden;
   box-sizing: border-box;
   position: absolute;
   width: 0px;
@@ -88,8 +89,9 @@ body {
   border-color: transparent transparent #aaa transparent;
   cursor: nw-resize !important;
 }
+
 .clickable:hover .resize-handle {
-  visibility:visible;
+  visibility: visible;
 }
 
 

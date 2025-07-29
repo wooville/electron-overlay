@@ -14,6 +14,13 @@ const wrapper = document.getElementById('wrapper');
 let clickEvent = 'click';
 export const specialUserName = 'admin'
 
+// electron.screen.getCursorScreenPoint();
+document.onmousemove = (event) => { api.sendMouseMove(event.x, event.y); }
+document.onclick = (event) => { api.sendMouseDown(event.x, event.y); }
+document.onmouseup = (event) => { api.sendMouseUp(event.x, event.y); }
+document.onscroll = (event) => { api.sendScroll(event.x, event.y); }
+// remote.getCurrentWebContents().sendInputEvent({ type: 'mouseMove', x: 10, y: 10 })
+
 // window.addEventListener('focus', () => {
 //     roomLayer0.classList.add('roomLayer-on');
 //     // window.title = 'focused';

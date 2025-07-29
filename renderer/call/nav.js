@@ -4,8 +4,8 @@ import setupDraggableElement from './drag.js';
 
 // control panels and related elements
 // call controls, device toggles
-// const toggleCamBtn = document.getElementById('toggleCam');
-// const toggleMicBtn = document.getElementById('toggleMic');
+const toggleCamBtn = document.getElementById('toggleCam');
+const toggleMicBtn = document.getElementById('toggleMic');
 // const toggleBlurBtn = document.getElementById('toggleBlur');
 // import { toggleCamBtn, toggleMicBtn } from '../tray/palette.js';
 const callControls = document.getElementById('callControls');

@@ -1,16 +1,16 @@
 // daily.js contains all DailyJS listeners and call joining/leaving logic.
 
-// import {
-//   registerJoinListener,
-//   registerLeaveBtnListener,
-//   registerCamBtnListener,
-//   registerMicBtnListener,
-//   updateCamBtn,
-//   updateMicBtn,
-//   // updateCallControls,
-//   // registerBlurBtnListener,
-//   // updateBlurBtn,
-// } from './nav.js';
+import {
+  //   registerJoinListener,
+  //   registerLeaveBtnListener,
+  //   registerCamBtnListener,
+  //   registerMicBtnListener,
+  //   updateCamBtn,
+  //   updateMicBtn,
+  //   updateCallControls,
+  //   //   // registerBlurBtnListener,
+  //   //   // updateBlurBtn,
+} from './nav.js';
 import {
   addOrUpdateTile,
   removeAllTiles,
@@ -53,15 +53,15 @@ async function initAndJoin(roomURL, name) {
     dailyConfig: {
       avoidEval: true,
     },
-    inputSettings: {
-      audio: {
-        settings: {
-          // oddly, in electron, this seems to make echo cancellation work :confused:
-          echoCancellation: false,
-        },
-        processor: { type: 'noise-cancellation' },
-      },
-    },
+    // inputSettings: {
+    //   audio: {
+    //     settings: {
+    //       // oddly, in electron, this seems to make echo cancellation work :confused:
+    //       echoCancellation: false,
+    //     },
+    //     processor: { type: 'noise-cancellation' },
+    //   },
+    // },
   })
     .on('camera-error', handleCameraError)
     .on('joined-meeting', handleJoinedMeeting)
@@ -71,7 +71,7 @@ async function initAndJoin(roomURL, name) {
     .on('participant-joined', handleParticipantJoined)
     .on('participant-left', handleParticipantLeft)
     .on('active-speaker-change', handleActiveSpeakerChange)
-    // .on('input-settings-updated', handleInputSettingsChange);
+  // .on('input-settings-updated', handleInputSettingsChange);
 
   return callObject
     .join({ url: roomURL, userName: name })
@@ -125,7 +125,7 @@ function handleError(event) {
 }
 
 function handleJoinedMeeting(event) {
-  // updateCallControls(true);
+  updateCallControls(true);
   updateCallControlsPalette(true);
   const p = event.participants.local;
   updateLocal(p);
@@ -133,7 +133,7 @@ function handleJoinedMeeting(event) {
 }
 
 function handleLeftMeeting() {
-  // updateCallControls(false);
+  updateCallControls(false);
   updateCallControlsPalette(false);
   removeAllTiles();
 }

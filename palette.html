@@ -7,20 +7,26 @@
 </head>
 
 <body>
-  <div id="callControlsPalette" class="bar controls-on calling">
+  <div id="callControlsPalette" class="bar controls-on entry">
     <h1>CALL</h1>
     <button id="toggleSelfTile">Toggle Self Tile</button>
-    <form id="enterCall">
-      <span class="formContainer">
-            <label>Name:</label>
-            <input type="text" id="participantName" value="Participant" required />
-      </span>
-      <button type="submit">Join Call</button>
-    </form>
+    <div id="entry">
+      <form id="enterCall">
+        <span class="formContainer">
+          <label>Name:</label>
+          <input type="text" id="participantName" value="Participant" required />
+        </span>
+        <button type="submit">Join Call</button>
+      </form>
+    </div>
+
     <div id="inCall">
-      <button id="leave">Leave Call</button>
+      <!-- <h3>Call in progress...</h3> -->
+      <button id="modeBtn" class="settings-button">MODE</button>
+      <h3>Near</h3>
+      <!-- <button id="leave">Leave Call</button>
       <button id="toggleCam">Camera</button>
-      <button id="toggleMic">Mic</button>
+      <button id="toggleMic">Mic</button> -->
     </div>
   </div>
 
@@ -34,18 +40,11 @@
     <button id="devBtn" class="settings-button">DEV</button>
   </div>
 
-  <div id="arrangeControlsPalette" class="bar controls-on">
+  <!-- <div id="arrangeControlsPalette" class="bar controls-on">
     <h1>ARRANGE</h1>
-    <!-- <label for="mode">Mode:</label> -->
-
-    <!-- <select name="mode" id="mode">
-      <option value="modeClose">Tile</option>
-      <option value="modeNear">Near</option>
-      <option value="modeFar">Far</option>
-    </select>  -->
     <button id="modeBtn" class="settings-button">MODE</button>
     <h3>Near</h3>
-  </div>
+  </div> -->
 
   <!-- <div class="bar bar-3">
     <div class="icon icon-1"></div>
@@ -58,7 +57,7 @@
       <input type="search" placeholder="search..." />
     </div>
   </div> -->
-  <script src="renderer/tray/palette.js"></script>
+  <script src="renderer/tray/palette.js" type="module"></script>
 </body>
 
 </html>

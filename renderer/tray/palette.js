@@ -12,11 +12,11 @@ const callURL = "https://esi.daily.co/Yg0D0AfEbvFcXT7UqaC0";
 // const goBtn = document.getElementById('goBtn');
 
 const entryID = 'entry';
-const inCallID = 'calling';
+const inCallID = 'inCall';
 
-// const participantName = document.getElementById('participantName');
+const participantName = document.getElementById('participantName');
+const toggleSelfTile = document.getElementById('toggleSelfTile');
 const joinForm = document.getElementById('enterCall');
-
 const toggleCamBtn = document.getElementById('toggleCam');
 const toggleMicBtn = document.getElementById('toggleMic');
 // export const toggleBlurBtn = document.getElementById('toggleBlur');
@@ -28,14 +28,7 @@ const toggleMicBtn = document.getElementById('toggleMic');
 // windowTopBar.style.top = windowTopBar.style.left = 0
 // windowTopBar.style.webkitAppRegion = "drag"
 // document.body.appendChild(windowTopBar)
-
-export function registerCamBtnListener(f) {
-  toggleCamBtn.addEventListener('click', f);
-}
-
-export function registerMicBtnListener(f) {
-  toggleMicBtn.addEventListener('click', f);
-}
+const clickEvent = 'click';
 
 
 // addressBar.addEventListener('submit', (event) => {
@@ -64,7 +57,31 @@ export function registerMicBtnListener(f) {
 //     });
 //   };
 // }
+window.addEventListener('join-failure', () => {
+  resetPalette();
+});
 
+window.addEventListener('left-call', () => {
+  resetPalette();
+});
+
+function resetPalette() {
+  const entry = document.getElementById(entryID);
+  const inCall = document.getElementById(inCallID);
+  entry.style.display = 'block';
+  inCall.style.display = 'none';
+  const wrapper = document.getElementById('callControlsPalette');
+  wrapper.classList.remove(inCallID);
+  wrapper.classList.add(entryID);
+}
+
+export function registerCamBtnListener(f) {
+  if (toggleCamBtn) toggleCamBtn.addEventListener('click', f);
+}
+
+export function registerMicBtnListener(f) {
+  if (toggleCamBtn) toggleMicBtn.addEventListener('click', f);
+}
 
 export function registerJoinListener(f) {
   window.addEventListener('join-call', (e) => {
@@ -87,18 +104,18 @@ export function registerLeaveBtnListener(f) {
     api.leftCall();
     // updateClipboardBtnClick(null);
   };
-  leaveBtn.addEventListener(clickEvent, leave);
+  if (leaveBtn) leaveBtn.addEventListener(clickEvent, leave);
   window.addEventListener('leave-call', leave);
 }
 
 export function updateCamBtn(camOn) {
   const off = 'cam-off';
   const on = 'cam-on';
-  if (camOn && !toggleCamBtn.classList.contains(on)) {
+  if (camOn && toggleCamBtn && !toggleCamBtn.classList.contains(on)) {
     toggleCamBtn.classList.remove(off);
     toggleCamBtn.classList.add(on);
   }
-  if (!camOn && !toggleCamBtn.classList.contains(off)) {
+  if (!camOn && toggleCamBtn && !toggleCamBtn.classList.contains(off)) {
     toggleCamBtn.classList.remove(on);
     toggleCamBtn.classList.add(off);
   }
@@ -107,11 +124,12 @@ export function updateCamBtn(camOn) {
 export function updateMicBtn(micOn) {
   const off = 'mic-off';
   const on = 'mic-on';
-  if (micOn && !toggleMicBtn.classList.contains(on)) {
+
+  if (micOn && toggleMicBtn && !toggleMicBtn.classList.contains(on)) {
     toggleMicBtn.classList.remove(off);
     toggleMicBtn.classList.add(on);
   }
-  if (!micOn && !toggleMicBtn.classList.contains(off)) {
+  if (!micOn && toggleMicBtn && !toggleMicBtn.classList.contains(off)) {
     toggleMicBtn.classList.remove(on);
     toggleMicBtn.classList.add(off);
   }
@@ -123,8 +141,8 @@ function setupInCallView(callURL) {
   entry.style.display = 'none';
   inCall.style.display = 'block';
   const wrapper = document.getElementById('callControlsPalette');
-  wrapper.classList.remove(entryID);
-  wrapper.classList.add(inCallID);
+  wrapper?.classList.remove(entryID);
+  wrapper?.classList.add(inCallID);
 
   // const copyButton = document.getElementById('clipboard');
   // copyButton.onclick = () => {
@@ -136,35 +154,55 @@ function setupInCallView(callURL) {
   // };
 }
 
-joinForm.addEventListener('submit', (event) => {
+export function updateCallControlsPalette(inCall) {
+  const controls = document.getElementById('callControlsPalette');
+  const on = 'controls-on';
+
+  // var line = new LeaderLine(
+  //   document.getElementById('testbox'),
+  //   document.getElementById('testbox2')
+  // );
+  // line.color = 'red'; // Change the color to red.
+  // line.size = 8; // Up size.
+  // console.log(line.size); // Output current size.
+
+  // If the user has joined a call, remove the call entry form
+  // and display the call controls. Otherwise, do the opposite.
+  if (inCall) {
+    controls?.classList.add(on);
+    return;
+  }
+  controls?.classList.remove(on);
+}
+
+if (joinForm) joinForm.addEventListener('submit', (event) => {
   event.preventDefault();
   // console.log("test");
-  api.joinCall(callURL, "participantNamevalue");
+  api.joinCall(callURL, participantName.value);
   setupInCallView(callURL);
 });
 
-
-quitBtn.addEventListener('click', () => {
+if (quitBtn) quitBtn.addEventListener('click', () => {
   api.close();
 });
 
-homeBtn.addEventListener('click', () => {
+if (homeBtn) homeBtn.addEventListener('click', () => {
   api.pageHome();
 });
 
-refreshBtn.addEventListener('click', () => {
+if (refreshBtn) refreshBtn.addEventListener('click', () => {
   api.refreshPage();
 });
 
-forwardBtn.addEventListener('click', () => {
+if (forwardBtn) forwardBtn.addEventListener('click', () => {
   api.pageForward();
 });
 
-backBtn.addEventListener('click', () => {
+if (backBtn) backBtn.addEventListener('click', () => {
   api.pageBack();
 });
 
-devBtn.addEventListener('click', () => {
+if (devBtn) devBtn.addEventListener('click', () => {
   api.pageDev();
 });
 

@@ -61,6 +61,18 @@ contextBridge.exposeInMainWorld('api', {
   callJoinUpdate: (joined) => {
     ipcRenderer.invoke('call-join-update', joined);
   },
+  sendMouseMove: (x, y) => {
+    ipcRenderer.invoke('send-input-event', { type: 'mouseMove', x: x, y: y });
+  },
+  sendMouseDown: (x, y) => {
+    ipcRenderer.invoke('send-input-event', { type: 'mouseDown', x: x, y: y });
+  },
+  sendMouseUp: (x, y) => {
+    ipcRenderer.invoke('send-input-event', { type: 'mouseUp', x: x, y: y });
+  },
+  sendScroll: (x, y) => {
+    ipcRenderer.invoke('send-input-event', { type: 'scroll', scrollX: x, y: y });
+  },
   leftCall: () => {
     ipcRenderer.invoke('left-call');
   },
@@ -73,7 +85,7 @@ contextBridge.exposeInMainWorld('api', {
   requestEdit: () => {
     ipcRenderer.invoke('request-edit', null);
   },
-  
+
 });
 
 // // This listener will allow us to handle a call join failure.
