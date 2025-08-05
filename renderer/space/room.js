@@ -13,7 +13,7 @@ const modeBtn = document.getElementById('modeBtn');
 // const refreshBtn = document.getElementById('refreshBtn');
 
 let clickEvent = 'click';
-export const specialUserName = 'admin'
+export const specialUserName = 'You'
 
 const wrapperObserver = new MutationObserver(function (mutations) {
   // check every detected mutation inside of wrapper wrapper and handle accordingly
@@ -105,8 +105,8 @@ modeBtn.addEventListener(clickEvent, changeMode);
 // presetsBtn.addEventListener(clickEvent, requestPresets);
 // editBtn.addEventListener(clickEvent, requestEdit);
 // refreshBtn.addEventListener(clickEvent, refreshPage);
-addOrUpdateTile(specialUserName, specialUserName, null, null, true);
-addOrUpdateTile('2', '2', null, null, false);
+// addOrUpdateTile(specialUserName, specialUserName, null, null, true);
+// addOrUpdateTile('specialUserName', 'specialUserName', null, null, false);
 hideAllTiles();
 // window.open('https://google.com');
 // webstrate.webstrate.on("transcluded", function (webstrateId, clientId, user) {

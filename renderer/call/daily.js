@@ -145,8 +145,8 @@ function handleJoinedMeeting(event) {
 function handleLeftMeeting() {
   // updateCallControls(false);
   // updateCallControlsPalette(false);
-  // removeAllTiles();
-  hideAllTiles();
+  removeAllTiles();
+  // hideAllTiles();
 }
 
 function handleParticipantUpdated(event) {
@@ -156,13 +156,13 @@ function handleParticipantUpdated(event) {
     return;
   }
   const tracks = getParticipantTracks(up);
-  addOrUpdateTile(up.session_id, up.user_name, tracks.video, tracks.audio);
+  addOrUpdateTile('Player 2', up.user_name, tracks.video, tracks.audio);
 }
 
 function handleParticipantJoined(event) {
   const up = event.participant;
   const tracks = getParticipantTracks(up);
-  addOrUpdateTile(up.session_id, up.user_name, tracks.video, tracks.audio);
+  addOrUpdateTile('Player 2', up.user_name, tracks.video, tracks.audio);
 }
 
 function getParticipantTracks(participant) {
@@ -179,7 +179,7 @@ function getParticipantTracks(participant) {
 
 function handleParticipantLeft(event) {
   const up = event.participant;
-  removeTile(up.session_id);
+  removeTile('Player 2');
 }
 
 function handleActiveSpeakerChange(event) {

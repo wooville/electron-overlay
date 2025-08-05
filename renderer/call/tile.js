@@ -141,6 +141,10 @@ function addTile(id, userName) {
   return { participant, video, audio };
 }
 
+export function renameTile(oldName, newName) {
+
+}
+
 function streamVideo(tag, track) {
   if (track === null) {
     // eslint-disable-next-line no-param-reassign
