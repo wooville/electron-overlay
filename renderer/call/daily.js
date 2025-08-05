@@ -1,21 +1,24 @@
 // daily.js contains all DailyJS listeners and call joining/leaving logic.
 
-import {
-    // registerJoinListener,
-    // registerLeaveBtnListener,
-    // registerCamBtnListener,
-    // registerMicBtnListener,
-    // updateCamBtn,
-    // updateMicBtn,
-    updateCallControls,
-  //   //   // registerBlurBtnListener,
-  //   //   // updateBlurBtn,
-} from './nav.js';
+// import {
+//   // registerJoinListener,
+//   // registerLeaveBtnListener,
+//   // registerCamBtnListener,
+//   // registerMicBtnListener,
+//   // updateCamBtn,
+//   // updateMicBtn,
+//   updateCallControls,
+//   //   //   // registerBlurBtnListener,
+//   //   //   // updateBlurBtn,
+// } from './nav.js';
 import {
   addOrUpdateTile,
+  hideAllTiles,
+  showAllTiles,
   removeAllTiles,
   removeTile,
-  updateActiveSpeaker,
+  updateActiveSpeaker
+  // hideAllTiles,
 } from './tile.js';
 import {
   specialUserName
@@ -29,7 +32,7 @@ import {
   registerClickableTilesBtnListener,
   updateCamBtn,
   updateMicBtn,
-  updateCallControlsPalette,
+  updateCallControlsPalette
 } from '../tray/palette.js'
 // import {
 //   drawLine
@@ -76,6 +79,9 @@ async function initAndJoin(roomURL, name) {
     .on('participant-left', handleParticipantLeft)
     .on('active-speaker-change', handleActiveSpeakerChange)
   // .on('input-settings-updated', handleInputSettingsChange);
+
+  // arrangeTiles();
+  showAllTiles();
 
   return callObject
     .join({ url: roomURL, userName: name })
@@ -139,7 +145,8 @@ function handleJoinedMeeting(event) {
 function handleLeftMeeting() {
   // updateCallControls(false);
   // updateCallControlsPalette(false);
-  removeAllTiles();
+  // removeAllTiles();
+  hideAllTiles();
 }
 
 function handleParticipantUpdated(event) {
@@ -199,17 +206,18 @@ function updateLocal(p) {
 }
 
 function toggleSeeMyself() {
-  // const tiles = document.querySelectorAll(".tile.localUser");
-  // tiles.forEach(function (tile) {
-  //   tile.classList.toggle("hide");
-  // });
+  const participants = document.querySelectorAll(".participant");
+  console.log(participants.length);
+  participants.forEach(function (participant) {
+    participant.classList.toggle("hide");
+  });
 }
 
 function toggleClickableTiles() {
-    const participants = document.querySelectorAll(".participant");
-    // console.log(participants.length);
-    participants.forEach(function (participant) {
-        participant.classList.toggle("clickthrough");
-        participant.classList.toggle("clickable");
-    });
+  const participants = document.querySelectorAll(".participant");
+  // console.log(participants.length);
+  participants.forEach(function (participant) {
+    participant.classList.toggle("clickthrough");
+    participant.classList.toggle("clickable");
+  });
 }

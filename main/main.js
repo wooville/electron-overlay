@@ -24,7 +24,7 @@ const path = require('path');
 const devMode = app.commandLine.hasSwitch('dev');
 app.commandLine.appendSwitch('disable-site-isolation-trials');
 
-const webstratesURL = 'https://videoplayground.xyz/tall-monkey-73/';
+const webstratesURL = 'https://videoplayground.xyz/happy-fly-62/';
 // const ll = require('leader-line');
 
 let roomWindow = null;
@@ -365,7 +365,7 @@ function createRoomWindow() {
     transparent: true,
     skipTaskbar: true,
     // hasShadow: false,
-    resizable: true,
+    resizable: false,
     // Don't show the window until the user is in a call.
     // show: false,
   });
@@ -472,6 +472,7 @@ app.whenReady().then(() => {
   createRoomWindow();
   // createPaletteWindow();
   createWebstratesWindow();
+  setupShortcuts();
 
   // createTrayWindow();
   // setupTray();
@@ -580,33 +581,49 @@ function preventRefresh(window) {
   });
 }
 
-function readInputs(){
-  globalShortcut.register('W', () => { 
+function readInputs() {
+  globalShortcut.register('W', () => {
     // console.log('W');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'W'}); });
-  globalShortcut.register('A', () => { 
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'W' });
+  });
+  globalShortcut.register('A', () => {
     // console.log('A');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'A'}); });
-  globalShortcut.register('S', () => { 
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'A' });
+  });
+  globalShortcut.register('S', () => {
     // console.log('S');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'S'}); });
-  globalShortcut.register('D', () => { 
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'S' });
+  });
+  globalShortcut.register('D', () => {
     // console.log('D');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'D', shiftKey: true}); });
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'D', shiftKey: true });
+  });
 
-  globalShortcut.register('Shift+W', () => { 
+  globalShortcut.register('Shift+W', () => {
     // console.log('W');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'W'}); });
-  globalShortcut.register('Shift+A', () => { 
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'W' });
+  });
+  globalShortcut.register('Shift+A', () => {
     // console.log('A');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'A'}); });
-  globalShortcut.register('Shift+S', () => { 
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'A' });
+  });
+  globalShortcut.register('Shift+S', () => {
     // console.log('S');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'S'}); });
-  globalShortcut.register('Shift+D', () => { 
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'S' });
+  });
+  globalShortcut.register('Shift+D', () => {
     // console.log('D');
-    webstratesView.webContents.sendInputEvent({type:'keyDown', keyCode: 'D'}); });
-  
+    webstratesView.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'D' });
+  });
+
+}
+
+function setupShortcuts() {
+  globalShortcut.register('F1', () => {
+    // console.log('W');
+    // roomView.webContents.send('toggle-interface');
+    (roomWindow.isVisible()) ? roomWindow.hide() : roomWindow.show();
+  });
 }
 
 // Our custom API handlers are defined below.
@@ -688,7 +705,7 @@ ipcMain.handle('request-edit', (e, args) => {
   webstratesView.webContents.executeJavaScript("toggleEdit();");
 });
 ipcMain.handle('refresh-page', (e, args) => {
-  console.log("resfsdf");
+  // console.log("resfsdf");
   webstratesView.webContents.reload();
 });
 ipcMain.handle('page-back', (e, args) => {
@@ -716,7 +733,7 @@ ipcMain.handle('page-dev', (e, args) => {
 });
 ipcMain.handle('send-input-event', (e, inputEvent) => {
   if (inputEvent.type != 'mouseMove') console.log(inputEvent);
-  
+
   // webstratesView.webContents.focus();
   webstratesView.webContents.sendInputEvent(inputEvent);
 });

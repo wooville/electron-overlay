@@ -14,7 +14,7 @@
 
 //   dragged = target;
 //   var style = getComputedStyle(dragged);
-  
+
 //   offset.x = e.clientX - parseInt(style.getPropertyValue("left"));
 //   offset.y = e.clientY - parseInt(style.getPropertyValue("top"));
 //   prevDimensions.width = parseInt(style.getPropertyValue("width"));
@@ -48,89 +48,89 @@
 //   dragged = null;
 // });
 
-  // var container = document.querySelector("#wrapper");
-  // var dragElements = document.querySelectorAll(".draggable");
+// var container = document.querySelector("#wrapper");
+// var dragElements = document.querySelectorAll(".draggable");
 
-  // for (var i = 0; i < dragElements.length; i++) {
-  //   setupDraggableElement(dragElements[i]);
-  // }
+// for (var i = 0; i < dragElements.length; i++) {
+//   setupDraggableElement(dragElements[i]);
+// }
 
-  export default function setupDraggableElement(element) {
-    var container = document.querySelector("#wrapper");
-    var handles = element.querySelectorAll(".resize-handle");
-    var handle;
-    
-    if (handles.length > 0) {
-      for (var i = 1; i < handles.length; i++) {
-        handles[i].remove();
-      }
-      handle = handles[0];
-    } else {
-      handle = document.createElement("div");
-      handle.className = "resize-handle clickable";
-      element.appendChild(handle);
+export default function setupDraggableElement(element) {
+  var container = document.querySelector("#tiles");
+  var handles = element.querySelectorAll(".resize-handle");
+  var handle;
+
+  if (handles.length > 0) {
+    for (var i = 1; i < handles.length; i++) {
+      handles[i].remove();
     }
+    handle = handles[0];
+  } else {
+    handle = document.createElement("div");
+    handle.className = "resize-handle clickable";
+    element.appendChild(handle);
+  }
 
-    var rect1 = element.getBoundingClientRect();
+  var rect1 = element.getBoundingClientRect();
 
-    TweenLite.set(handle, { x: rect1.width, y: rect1.height });
+  TweenLite.set(handle, { x: rect1.width, y: rect1.height });
 
-    var rect2 = handle.getBoundingClientRect();
+  var rect2 = handle.getBoundingClientRect();
 
-    var offset = {
-      x1: rect2.left - rect1.right,
-      y1: rect2.top - rect1.bottom,
-      x2: rect2.right - rect1.right,
-      y2: rect2.bottom - rect1.bottom
-    };
+  var offset = {
+    x1: rect2.left - rect1.right,
+    y1: rect2.top - rect1.bottom,
+    x2: rect2.right - rect1.right,
+    y2: rect2.bottom - rect1.bottom
+  };
 
-    Draggable.create(element, {
-      bounds: container,
-      type: "left,top",
-      autoScroll: 1,
-      inertia: true,
-    });
+  Draggable.create(element, {
+    bounds: container,
+    type: "left,top",
+    autoScroll: 1,
+    inertia: true,
+  });
 
-    Draggable.create(handle, {
-      bounds: container,
-      type: "left,top",
-      autoScroll: 1,
-      onPress: function(e) {
-        e.stopPropagation();
+  Draggable.create(handle, {
+    bounds: container,
+    type: "left,top",
+    autoScroll: 1,
+    onPress: function (e) {
+      e.stopPropagation();
+    },
+    onDrag: function () {
+      var w = parseInt(element.style.width, 10);
+      var h = parseInt(element.style.height, 10);
+      if (isNaN(w)) w = 0;
+      if (isNaN(h)) h = 0;
+      TweenLite.set(element, { width: this.x + rect1.width, height: this.y + rect1.height });
+    },
+    liveSnap: {
+      x: function (x) {
+        return clamp(x, -offset.x1, x + offset.x2);
       },
-      onDrag: function() {      
-        var w = parseInt(element.style.width,10);
-      var h = parseInt(element.style.height,10);
-      if (isNaN(w)) w=0;
-      if (isNaN(h)) h=0;
-        TweenLite.set(element, { width: this.x + rect1.width, height: this.y + rect1.height });      
-      },
-      liveSnap: {
-        x: function(x) {
-          return clamp(x, -offset.x1, x + offset.x2);
-        },
-        y: function(y) {
-          return clamp(y, -offset.y1, y + offset.y2);
-        }
+      y: function (y) {
+        return clamp(y, -offset.y1, y + offset.y2);
       }
-    });  
-  }
+    }
+  });
+}
 
-  export function refreshDraggableElement(element) {
-    var handle = element.querySelector(".resize-handle");
-    handle.style.left = "";
-    handle.style.top = "";
-    var rect1=element.getBoundingClientRect();
-    // var cs = getComputedStyle(element);
-    var w = parseInt(element.style.width,10);
-    var h = parseInt(element.style.height,10);
-    if (isNaN(w)) w=0;
-    if (isNaN(h)) h=0;
-    console.log(rect1.width+' '+w);
-    // TweenLite.set(element, { width: handle.x + rect1.width, height: handle.y + rect1.height });
-    TweenLite.set(handle, { x: Math.max(rect1.width,w), y: Math.max(rect1.height, h) });    
-  }
+export function refreshDraggableElement(element) {
+  var handle = element.querySelector(".resize-handle");
+  handle.style.left = "";
+  handle.style.top = "";
+  var rect1 = element.getBoundingClientRect();
+  // var cs = getComputedStyle(element);
+  var w = parseInt(element.style.width, 10);
+  var h = parseInt(element.style.height, 10);
+  if (isNaN(w)) w = 0;
+  if (isNaN(h)) h = 0;
+  console.log(rect1.width + ' ' + w);
+  // TweenLite.set(element, { width: handle.x + rect1.width, height: handle.y + rect1.height });
+  TweenLite.set(handle, { x: Math.max(rect1.width, w), y: Math.max(rect1.height, h) });
+}
 
-  function clamp(value, min, max) {
-    return value < min ? min : (value > max ? max : value);
-  }
+function clamp(value, min, max) {
+  return value < min ? min : (value > max ? max : value);
+}

@@ -13,10 +13,11 @@ body {
 }
 
 #wrapper {
+  position: absolute;
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
   user-select: none;
   box-sizing: border-box;
   /* background: rgba(0, 0, 0, 0); */
@@ -97,7 +98,7 @@ body {
   visibility: visible;
 }
 
-.participant .clickthrough {
+.participant.clickthrough {
   pointer-events: none;
 }
 
@@ -108,7 +109,7 @@ body {
 }
 
 .hide {
-  display:none;
+  display: none;
 }
 
 #cursorIcon {
@@ -128,7 +129,7 @@ body {
   width: 100%;
   position: absolute;
   /* padding-top: 80px; */
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   box-sizing: border-box;
   background: transparent;
@@ -396,6 +397,10 @@ video {
 
 #tiles #cam-off.show {
   display: flex;
+}
+
+#tiles .hide {
+  display: none;
 }
 
 .fit {

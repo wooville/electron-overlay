@@ -10,7 +10,8 @@ export function addOrUpdateTile(
   userName,
   videoTrack,
   audioTrack,
-  isLocal = false
+  isLocal = false,
+  isVisible = true
 ) {
   const videoTagID = getVideoID(id);
   let videoTag = null;
@@ -189,6 +190,20 @@ export function removeAllTiles() {
   while (eles.length > 0) {
     const ele = eles[0];
     ele.remove();
+  }
+}
+
+export function hideAllTiles() {
+  const eles = document.getElementsByClassName('participant');
+  for (var i = 0; i < eles.length; i++) {
+    eles[i].classList.add('hide');
+  }
+}
+
+export function showAllTiles() {
+  const eles = document.getElementsByClassName('participant');
+  for (var i = 0; i < eles.length; i++) {
+    eles[i].classList.remove('hide');
   }
 }
 

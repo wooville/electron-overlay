@@ -1,5 +1,7 @@
 // const addressBar = document.getElementById('addressBar');
 
+// import { showAllTiles } from "../call/tile";
+
 // import setupDraggableElement from "../call/drag";
 
 // basic nav
@@ -33,6 +35,7 @@ const toggleMicBtn = document.getElementById('toggleMic');
 // document.body.appendChild(windowTopBar)
 const clickEvent = 'click';
 
+// resetPalette();
 // addressBar.addEventListener('submit', (event) => {
 //   event.preventDefault();
 //   const urlEle = document.getElementById('playgroundURL');
@@ -103,6 +106,7 @@ export function registerJoinListener(f) {
     f(url, name)
       .then((joined) => {
         api.callJoinUpdate(joined);
+        // showAllTiles();
         if (joined) {
           // updateClipboardBtnClick(url);
         }
@@ -152,7 +156,7 @@ function setupInCallView(callURL) {
   const entry = document.getElementById(entryID);
   const inCall = document.getElementById(inCallID);
   entry.style.display = 'none';
-  inCall.style.display = 'block';
+  inCall.style.display = 'flex';
   const wrapper = document.getElementById('callControlsPalette');
   wrapper?.classList.remove(entryID);
   wrapper?.classList.add(inCallID);
@@ -200,7 +204,7 @@ if (toggleSeeMyselfBtn) toggleSeeMyselfBtn.addEventListener('click', () => {
 });
 
 if (toggleClickableTilesBtn) toggleClickableTilesBtn.addEventListener('click', () => {
-  api.toggleClickableTiles();
+  // api.toggleClickableTiles();
 });
 
 if (quitBtn) quitBtn.addEventListener('click', () => {
