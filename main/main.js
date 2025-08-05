@@ -20,7 +20,11 @@ const {
 
 const path = require('path');
 // const positioner = require('electron-traywindow-positioner');
+// const contextMenu = require('electron-context-menu');
 
+// contextMenu({
+//   showSaveImageAs: true
+// });
 const devMode = app.commandLine.hasSwitch('dev');
 app.commandLine.appendSwitch('disable-site-isolation-trials');
 

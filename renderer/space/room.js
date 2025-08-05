@@ -132,27 +132,32 @@ function changeMode() {
     var state = Flip.getState(participant);
     var cs = getComputedStyle(participant);
     // console.log(count);
-    // participant.style.width = cs.width;
-    // participant.style.height = cs.height;
-    // participant.style.left = cs.left;
-    // participant.style.top = cs.top;
-    if (modeCount % 3 === 0) {
+    participant.style.width = "";
+    participant.style.height = "";
+    participant.style.left = "";
+    participant.style.top = "";
+
+    if (modeCount % 2 === 1) {
+      participant.style.width = "800px";
+      participant.style.height = "800px";
+    }
+
+    if (modeCount < 2) {
       //mode0
       // participant.style.width = "";
       // participant.style.height = "";
       // participant.style.left = "";
       // participant.style.top = "";
-
       participant.style.left = (count % 2 === 0) ? "0px" : (window.visualViewport.width - parseInt(cs.width, 10)) + "px";
       participant.style.top = (window.visualViewport.height - parseInt(cs.height, 10)) + "px";
-    } else if (modeCount % 3 === 1) {
+    } else if (modeCount < 4) {
       //mode1
 
       // TweenLite.set(participant, { width: 800, height: 800 });
-      // participant.style.height="800px";
+
       participant.style.left = "0px";
       participant.style.top = (parseInt(cs.height, 10) * count) + "px";
-    } else if (modeCount % 3 === 2) {
+    } else if (modeCount < 6) {
       //mode2
 
 
@@ -177,7 +182,7 @@ function changeMode() {
 
   });
 
-  modeBtn.innerHTML = (modeCount + 1) % 3;
+  modeBtn.innerHTML = (modeCount + 1) % 6;
 }
 
 function requestSync() {
