@@ -25,8 +25,8 @@ import {
   registerLeaveBtnListener,
   registerCamBtnListener,
   registerMicBtnListener,
-  // registerSeeMyselfBtnListener,
-  // registerClickableTilesBtnListener,
+  registerSeeMyselfBtnListener,
+  registerClickableTilesBtnListener,
   updateCamBtn,
   updateMicBtn,
   updateCallControlsPalette,
@@ -48,8 +48,8 @@ registerJoinListener(initAndJoin);
 registerLeaveBtnListener(leave);
 registerCamBtnListener(toggleCamera);
 registerMicBtnListener(toggleMicrophone);
-// registerSeeMyselfBtnListener(toggleSeeMyself);
-// registerClickableTilesBtnListener(toggleClickableTiles);
+registerSeeMyselfBtnListener(toggleSeeMyself);
+registerClickableTilesBtnListener(toggleClickableTiles);
 // registerBlurBtnListener(toggleBlur);
 
 async function initAndJoin(roomURL, name) {
@@ -129,16 +129,16 @@ function handleError(event) {
 }
 
 function handleJoinedMeeting(event) {
-  updateCallControls(true);
-  updateCallControlsPalette(true);
+  // updateCallControls(true);
+  // updateCallControlsPalette(true);
   const p = event.participants.local;
   updateLocal(p);
 
 }
 
 function handleLeftMeeting() {
-  updateCallControls(false);
-  updateCallControlsPalette(false);
+  // updateCallControls(false);
+  // updateCallControlsPalette(false);
   removeAllTiles();
 }
 
@@ -198,17 +198,18 @@ function updateLocal(p) {
   addOrUpdateTile(specialUserName, specialUserName, tracks.video, tracks.audio, true);
 }
 
-// function toggleSeeMyself() {
-//   const tiles = document.querySelectorAll(".tile.localUser");
-//   tiles.forEach(function (tile) {
-//     tile.classList.toggle("hide");
-//   });
-// }
+function toggleSeeMyself() {
+  // const tiles = document.querySelectorAll(".tile.localUser");
+  // tiles.forEach(function (tile) {
+  //   tile.classList.toggle("hide");
+  // });
+}
 
-// function toggleClickableTiles() {
-//   const tiles = document.querySelectorAll(".participant");
-//   console.log(tiles.length);
-//   tiles.forEach(function (tile) {
-//     tile.classList.toggle("clickthrough");
-//   });
-// }
+function toggleClickableTiles() {
+    const participants = document.querySelectorAll(".participant");
+    // console.log(participants.length);
+    participants.forEach(function (participant) {
+        participant.classList.toggle("clickthrough");
+        participant.classList.toggle("clickable");
+    });
+}

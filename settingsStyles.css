@@ -19,7 +19,7 @@
     transition: background 0.3s;
     display: flex;
     align-items: center;
-    gap: 8px;
+    margin: 8px;
     z-index: 1000;
   }
 

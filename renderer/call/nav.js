@@ -8,8 +8,8 @@ const toggleCamBtn = document.getElementById('toggleCam');
 const toggleMicBtn = document.getElementById('toggleMic');
 // const toggleBlurBtn = document.getElementById('toggleBlur');
 // import { toggleCamBtn, toggleMicBtn } from '../tray/palette.js';
-const callControls = document.getElementById('callControls');
-const callControlsDraggable = setupDraggableElement(callControls);
+// const callControls = document.getElementById('callControls');
+// const callControlsDraggable = setupDraggableElement(callControls);
 
 // room controls
 // const toggleLiveBtn = document.getElementById('toggleLive'); // join/start a "room" for a call, each user entitled to their own room at least
@@ -23,9 +23,10 @@ const callControlsDraggable = setupDraggableElement(callControls);
 // const avatarControls = document.getElementById('avatarControls');
 // const avatarControlsDraggable = setupDraggableElement(avatarControls);
 
+const paletteControls = document.getElementById("paletteControls");
+const paletteControlsDraggable = setupDraggableElement(paletteControls);
+
 const clickEvent = 'click';
-
-
 
 export function registerJoinListener(f) {
   window.addEventListener('join-call', (e) => {

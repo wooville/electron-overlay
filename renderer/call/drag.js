@@ -70,8 +70,6 @@
       handle.className = "resize-handle clickable";
       element.appendChild(handle);
     }
-    
-    
 
     var rect1 = element.getBoundingClientRect();
 
@@ -95,12 +93,17 @@
 
     Draggable.create(handle, {
       bounds: container,
+      type: "left,top",
       autoScroll: 1,
       onPress: function(e) {
         e.stopPropagation();
       },
       onDrag: function() {      
-        TweenLite.set(element, { width: this.x + 0, height: this.y + 0 });      
+        var w = parseInt(element.style.width,10);
+      var h = parseInt(element.style.height,10);
+      if (isNaN(w)) w=0;
+      if (isNaN(h)) h=0;
+        TweenLite.set(element, { width: this.x + rect1.width, height: this.y + rect1.height });      
       },
       liveSnap: {
         x: function(x) {
@@ -111,6 +114,21 @@
         }
       }
     });  
+  }
+
+  export function refreshDraggableElement(element) {
+    var handle = element.querySelector(".resize-handle");
+    handle.style.left = "";
+    handle.style.top = "";
+    var rect1=element.getBoundingClientRect();
+    // var cs = getComputedStyle(element);
+    var w = parseInt(element.style.width,10);
+    var h = parseInt(element.style.height,10);
+    if (isNaN(w)) w=0;
+    if (isNaN(h)) h=0;
+    console.log(rect1.width+' '+w);
+    // TweenLite.set(element, { width: handle.x + rect1.width, height: handle.y + rect1.height });
+    TweenLite.set(handle, { x: Math.max(rect1.width,w), y: Math.max(rect1.height, h) });    
   }
 
   function clamp(value, min, max) {

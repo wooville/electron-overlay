@@ -1,4 +1,5 @@
-import { addOrUpdateTile } from "../call/tile.js";
+import { addOrUpdateTile } from '../call/tile.js';
+import { refreshDraggableElement } from '../call/drag.js'
 
 const wrapper = document.getElementById('wrapper');
 // const webstrates = document.getElementById('webstrates');
@@ -34,6 +35,9 @@ export const specialUserName = 'admin'
     });
   });
 
+const paletteControls = document.getElementById('paletteControls');
+refreshDraggableElement(paletteControls);
+
 //   function handleMutationNodeAddRemove(mutation){
 //     mutation.addedNodes.forEach(function(newElement) {
 //       setupElement(newElement);
@@ -50,7 +54,7 @@ export const specialUserName = 'admin'
 
   function handleMutationClickableTiles(mutation) {
     // check draggable locks
-    if (mutation.target.classList.contains('tile') && mutation.target.classList.contains('clickthrough')){
+    if (mutation.target.classList.contains('clickthrough')){
       //         console.log("lock");
       var drag = Draggable.get(mutation.target);
       if (drag) drag.disable();
@@ -71,11 +75,11 @@ export const specialUserName = 'admin'
   });
 
 // electron.screen.getCursorScreenPoint();
-document.onmousemove = (event) => { api.sendMouseMove(event.x, event.y); }
+// document.onmousemove = (event) => { api.sendMouseMove(event.x, event.y); }
 // document.onclick = (event) => { api.sendClick(event.x, event.y); }
-document.onmousedown = (event) => { api.sendMouseDown(event.x, event.y); }
-document.onmouseup = (event) => { api.sendMouseUp(event.x, event.y); }
-document.onmousewheel = (event) => { api.sendMouseWheel(event.deltaX, event.deltaY); }
+// document.onmousedown = (event) => { api.sendMouseDown(event.x, event.y); }
+// document.onmouseup = (event) => { api.sendMouseUp(event.x, event.y); }
+// document.onmousewheel = (event) => { api.sendMouseWheel(event.deltaX, event.deltaY); }
 
 // window.onkeydown = (event) => { api.sendKeyDown(event.keyDown); }
 // remote.getCurrentWebContents().sendInputEvent({ type: 'mouseMove', x: 10, y: 10 })
@@ -100,29 +104,18 @@ modeBtn.addEventListener(clickEvent, changeMode);
 // presetsBtn.addEventListener(clickEvent, requestPresets);
 // editBtn.addEventListener(clickEvent, requestEdit);
 // refreshBtn.addEventListener(clickEvent, refreshPage);
-addOrUpdateTile(specialUserName, specialUserName, null, null, true);
+// addOrUpdateTile(specialUserName, specialUserName, null, null, true);
+// addOrUpdateTile('2', '2', null, null, false);
 // webstrate.webstrate.on("transcluded", function (webstrateId, clientId, user) {
 //     // The webstrate client in the iframe has now finished loading.
 //     console.log("clude test");
 // });
 // setupParticipantCursor(p);
-
+const refreshBtn = document.getElementById('refreshBtn');
 // registerToggleRoomListener(toggleRoom);
-
-function toggleSeeMyself() {
-    const tiles = document.querySelectorAll(".tile.localUser");
-    tiles.forEach(function (tile) {
-        tile.classList.toggle("hide");
-    });
-}
-
-function toggleClickableTiles() {
-    const participants = document.querySelectorAll(".participant");
-    console.log(participants.length);
-    participants.forEach(function (participant) {
-        participant.classList.toggle("clickthrough");
-    });
-}
+if (refreshBtn) refreshBtn.addEventListener('click', () => {
+  api.refreshPage();
+});
 
 function changeMode() {
     var modeCount = parseInt(modeBtn.innerHTML);
@@ -150,8 +143,8 @@ function changeMode() {
             participant.style.left="";
             participant.style.top="";
 
-            participant.style.width="800px";
-            participant.style.height="800px";
+            // TweenLite.set(participant, { width: 800, height: 800 });
+            // participant.style.height="800px";
             participant.style.left= "0px";
             participant.style.top= cs.height*count+"px";
         } else if (modeCount%3===2){
@@ -161,8 +154,8 @@ function changeMode() {
             participant.style.left="";
             participant.style.top="";
 
-            participant.style.top= (count%2===0) ? "0px" : window.visualViewport.width-cs.height+"px";
-            participant.style.left= window.visualViewport.height-cs.width+"px";
+            participant.style.top= (count%2===0) ? "0px" : window.visualViewport.height-cs.height+"px";
+            participant.style.left= window.visualViewport.width-cs.width+"px";
         }
         
         // participant.style.left = fourCorners[(count+1)%3];
@@ -171,6 +164,7 @@ function changeMode() {
         // count %= 2;
         
         Draggable.get(participant)?.update();
+        refreshDraggableElement(participant);
     });
 
     modeBtn.innerHTML = (modeCount+1)%3;

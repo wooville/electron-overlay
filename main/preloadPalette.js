@@ -14,6 +14,9 @@ contextBridge.exposeInMainWorld('api', {
   close: () => {
     ipcRenderer.invoke('close-app');
   },
+  toggleSeeMyself: () => {
+    ipcRenderer.invoke('toggle-self');
+  },
   joinCall: (url, name) => {
     ipcRenderer.invoke('join-call', url, name);
   },

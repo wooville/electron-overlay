@@ -1,5 +1,7 @@
 // const addressBar = document.getElementById('addressBar');
 
+// import setupDraggableElement from "../call/drag";
+
 // basic nav
 const quitBtn = document.getElementById('quitBtn');
 const homeBtn = document.getElementById('homeBtn');
@@ -30,7 +32,6 @@ const toggleMicBtn = document.getElementById('toggleMic');
 // windowTopBar.style.webkitAppRegion = "drag"
 // document.body.appendChild(windowTopBar)
 const clickEvent = 'click';
-
 
 // addressBar.addEventListener('submit', (event) => {
 //   event.preventDefault();
@@ -78,13 +79,13 @@ function resetPalette() {
 
 export function registerSeeMyselfBtnListener(f) {
   // const toggleSeeMyselfBtn = document.getElementById('toggleSeeMyself');
-  console.log(toggleSeeMyselfBtn);
+  // console.log(toggleSeeMyselfBtn);
   if (toggleSeeMyselfBtn) toggleSeeMyselfBtn.addEventListener('click', f);
 }
 
 export function registerClickableTilesBtnListener(f) {
   // const toggleClickableTilesBtn = document.getElementById('toggleClickableTiles');
-  console.log(toggleClickableTilesBtn);
+  // console.log(toggleClickableTilesBtn);
   if (toggleClickableTilesBtn) toggleClickableTilesBtn.addEventListener('click', f);
 }
 
@@ -167,24 +168,24 @@ function setupInCallView(callURL) {
 }
 
 export function updateCallControlsPalette(inCall) {
-  const controls = document.getElementById('callControlsPalette');
-  const on = 'controls-on';
+  // const controls = document.getElementById('callControlsPalette');
+  // const on = 'controls-on';
 
-  // var line = new LeaderLine(
-  //   document.getElementById('testbox'),
-  //   document.getElementById('testbox2')
-  // );
-  // line.color = 'red'; // Change the color to red.
-  // line.size = 8; // Up size.
-  // console.log(line.size); // Output current size.
+  // // var line = new LeaderLine(
+  // //   document.getElementById('testbox'),
+  // //   document.getElementById('testbox2')
+  // // );
+  // // line.color = 'red'; // Change the color to red.
+  // // line.size = 8; // Up size.
+  // // console.log(line.size); // Output current size.
 
-  // If the user has joined a call, remove the call entry form
-  // and display the call controls. Otherwise, do the opposite.
-  if (inCall) {
-    controls?.classList.add(on);
-    return;
-  }
-  controls?.classList.remove(on);
+  // // If the user has joined a call, remove the call entry form
+  // // and display the call controls. Otherwise, do the opposite.
+  // if (inCall) {
+  //   controls?.classList.add(on);
+  //   return;
+  // }
+  // controls?.classList.remove(on);
 }
 
 if (joinForm) joinForm.addEventListener('submit', (event) => {
@@ -194,6 +195,13 @@ if (joinForm) joinForm.addEventListener('submit', (event) => {
   setupInCallView(callURL);
 });
 
+if (toggleSeeMyselfBtn) toggleSeeMyselfBtn.addEventListener('click', () => {
+  api.toggleSeeMyself();
+});
+
+if (toggleClickableTilesBtn) toggleClickableTilesBtn.addEventListener('click', () => {
+  api.toggleClickableTiles();
+});
 
 if (quitBtn) quitBtn.addEventListener('click', () => {
   api.close();

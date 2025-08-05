@@ -22,8 +22,9 @@ const path = require('path');
 // const positioner = require('electron-traywindow-positioner');
 
 const devMode = app.commandLine.hasSwitch('dev');
+app.commandLine.appendSwitch('disable-site-isolation-trials');
 
-const webstratesURL = 'https://videoplayground.xyz/new-falcon-26/';
+const webstratesURL = 'https://videoplayground.xyz/tall-monkey-73/';
 // const ll = require('leader-line');
 
 let roomWindow = null;
@@ -33,6 +34,7 @@ let trayView = null;
 let tray = null;
 let mousePos = null;
 
+let tileWindows = [];
 
 // app.on('ready', () => {
 //   let mousePos = screen.getCursorScreenPoint();
@@ -43,7 +45,7 @@ function createPaletteWindow() {
   // Create the window that opens on app start
   // and tray click
   paletteWindow = new BaseWindow({
-    parent: webstratesWindow,
+    // parent: roomWindow,
     title: 'Palette Window',
     // webPreferences: {
     //   preload: path.join(__dirname, 'preloadTray.js'),
@@ -91,9 +93,7 @@ function createPaletteWindow() {
     level = 'floating';
   };
 
-
-
-  // paletteWindow.setAlwaysOnTop(true, level);
+  paletteWindow.setAlwaysOnTop(true, level);
 
   // paletteWindow.on('blur', () => {
   //   // paletteWindow.hide();
@@ -113,10 +113,88 @@ function createPaletteWindow() {
   paletteWindow.on('closed', () => {
     paletteView.webContents.close()
   });
+}
+
+function createTileWindow(windowTitle) {
+  // Create the window that opens on app start
+  // and tray click
+  tileWindow = new BaseWindow({
+    parent: webstratesWindow,
+    title: windowTitle,
+    // webPreferences: {
+    //   preload: path.join(__dirname, 'preloadTray.js'),
+    // },
+    width: 400,
+    height: 400,
+    show: true,
+    fullscreen: true,
+    frame: false,
+    // autoHideMenuBar: true,
+    setVisibleOnAllWorkspaces: true,
+    transparent: true,
+    // skipTaskbar: true,
+    // hasShadow: false,
+    // resizable: false,
+    // modal: true,
+  });
+
+  // preventRefresh(trayWindow);
+
+  tileView = new WebContentsView({
+    // webPreferences: {
+    //   preload: path.join(__dirname, 'preloadPalette.js'),
+    // }
+  });
+  tileView.webContents.loadFile('tile.html');
+  tileView.setBounds({ x: 0, y: 0, width: tileWindow.getBounds().width, height: tileWindow.getBounds().height })
+  tileWindow.contentView.addChildView(tileView);
+  tileView.setBackgroundColor("#0FFF");
+  // tileWindow.setIgnoreMouseEvents(true, { forward: true });
+
+  tileWindow.on('will-resize', (e, newBounds, details) => {
+    tileView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+    // roomView.setBounds({ x: 0, y: 0, width: newBounds.width, height: newBounds.height });
+  })
+  tileWindow.on('resize', () => {
+    tileView.setBounds({ x: 0, y: 0, width: tileWindow.getBounds().width, height: tileWindow.getBounds().height });
+    // roomView.setBounds({ x: 0, y: 0, width: roomView.getBounds().width, height: roomView.getBounds().height });
+  })
+
+  // if (devMode) paletteView.webContents.openDevTools();
+
+  let level = 'normal';
+  // Mac OS requires a different level for our drag/drop and overlay
+  // functionality to work as expected.
+  if (process.platform === 'darwin') {
+    level = 'floating';
+  };
 
 
 
+  // tileWindow.setAlwaysOnTop(true, level);
 
+  // paletteWindow.on('blur', () => {
+  //   // paletteWindow.hide();
+  // });
+  // paletteWindow.on('show', () => {
+  //   // positioner.position(paletteWindow, tray.getBounds());
+  //   paletteWindow.focus();
+  // });
+  // paletteWindow.webContents.once('dom-ready', () => {
+  //   paletteWindow.show();
+  // });
+  // paletteView.webContents.on('new-window', (e, url) => {
+  //   e.preventDefault();
+  //   shell.openExternal(url);
+  // });
+
+  tileWindow.on('closed', () => {
+    tileView.webContents.close()
+    tileWindows = tileWindows.filter(window => window.title === windowTitle);
+    console.log(tileWindows.length);
+  });
+
+  tileWindows.push(tileWindow);
 }
 
 function createTrayWindow() {
@@ -176,13 +254,14 @@ function createWebstratesWindow() {
   // Create the window that opens on app start
   // and tray click
   webstratesWindow = new BaseWindow({
+    // parent: roomWindow,
     title: 'Video Playground',
     width: 1280,
     height: 960,
     fullscreen: true,
     frame: false,
     // autoHideMenuBar: false,
-    transparent: true,
+    // transparent: true,
     // skipTaskbar: true,
     hasShadow: false,
     // resizable: false,
@@ -196,7 +275,7 @@ function createWebstratesWindow() {
     }
   });
   webstratesView.webContents.loadURL(webstratesURL);
-  // webstratesView.webContents.setBackgroundThrottling(false);
+  webstratesView.webContents.setBackgroundThrottling(false);
   webstratesView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height })
   webstratesWindow.contentView.addChildView(webstratesView);
 
@@ -226,7 +305,7 @@ function createWebstratesWindow() {
 
     if (zoomDirection === "in") {
 
-      // win.webContents.setZoomFactor(currentZoom + 0.20);
+      // webstratesView.webContents.setZoomFactor(currentZoom + 0.20);
       webstratesView.webContents.zoomFactor = currentZoom + 0.1;
 
       console.log("Zoom factor increased to - "
@@ -234,8 +313,8 @@ function createWebstratesWindow() {
     }
     if (zoomDirection === "out") {
 
-      // win.webContents.setZoomFactor(currentZoom - 0.20);
-      webstratesView.webContents.zoomFactor = currentZoom - 0.1;
+      // webstratesView.webContents.setZoomFactor(Math.max(currentZoom - 0.20, 0));
+      webstratesView.webContents.zoomFactor = Math.max(currentZoom - 0.1, 0);
 
       console.log("Zoom factor decreased to - "
         , webstratesView.webContents.zoomFactor * 100, "%");
@@ -274,22 +353,22 @@ function createWebstratesWindow() {
 
 function createRoomWindow() {
   // Create the browser window.
-  // roomWindow = new BaseWindow({
-  //   parent: webstratesWindow,
-  //   title: 'Video Overlay',
-  //   useContentSize: true,
-  //   // width: 1280,
-  //   // height: 960,
-  //   fullscreen: true,
-  //   frame: false,
-  //   // autoHideMenuBar: false,
-  //   transparent: true,
-  //   skipTaskbar: true,
-  //   // hasShadow: false,
-  //   resizable: true,
-  //   // Don't show the window until the user is in a call.
-  //   // show: false,
-  // });
+  roomWindow = new BaseWindow({
+    // parent: webstratesWindow,
+    title: 'Video Overlay',
+    // useContentSize: true,
+    // width: 1280,
+    // height: 960,
+    fullscreen: true,
+    frame: false,
+    // autoHideMenuBar: false,
+    transparent: true,
+    skipTaskbar: true,
+    // hasShadow: false,
+    resizable: true,
+    // Don't show the window until the user is in a call.
+    // show: false,
+  });
   // roomWindow = new BaseWindow({ width: 800, height: 400 })
 
   // preventRefresh(roomWindow);
@@ -307,12 +386,12 @@ function createRoomWindow() {
   roomView.webContents.loadFile('index.html');
   // roomView.webContents.setBackgroundThrottling(false);
   roomView.setBackgroundColor("#00000000");
-  roomView.setBounds({ x: 0, y: 0, width: webstratesWindow.getBounds().width, height: webstratesWindow.getBounds().height })
+  roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height })
 
 
   // roomView.addChildView(webstrateView);
   // roomWindow.contentView.addChildView(roomView);
-  webstratesWindow.contentView.addChildView(roomView);
+  roomWindow.contentView.addChildView(roomView);
   if (devMode) roomView.webContents.openDevTools();
 
   // roomWindow.on('will-resize', (e, newBounds, details) => {
@@ -327,7 +406,7 @@ function createRoomWindow() {
   // roomWindow.on('exit-fullscreen', () => {
   //   roomView.setBounds({ x: 0, y: 0, width: roomWindow.getBounds().width, height: roomWindow.getBounds().height });
   // })
-  webstratesWindow.on('closed', () => {
+  roomWindow.on('closed', () => {
     roomView.webContents.close()
   })
 
@@ -336,9 +415,9 @@ function createRoomWindow() {
     // webstratesView.webContents.openDevTools();
     // roomView.webContents.openDevTools();
   } else {
-    // roomWindow.setIgnoreMouseEvents(true, { forward: true });
+    roomWindow.setIgnoreMouseEvents(true, { forward: true });
   }
-  // roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  roomWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   let level = 'normal';
   // Mac OS requires a different level for our drag/drop and overlay
@@ -347,7 +426,7 @@ function createRoomWindow() {
     level = 'floating';
   }
 
-  // roomWindow.setAlwaysOnTop(true, level);
+  roomWindow.setAlwaysOnTop(true, level);
 
   // roomWindow.on('focus', () => {
   //   roomWindow.title = 'focused';
@@ -390,13 +469,13 @@ function createRoomWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWebstratesWindow();
-  createPaletteWindow();
-
   createRoomWindow();
+  // createPaletteWindow();
+  createWebstratesWindow();
+
   // createTrayWindow();
   // setupTray();
-  readInputs();
+  // readInputs();
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -544,16 +623,16 @@ ipcMain.handle('join-call', (e, url, name) => {
 // the failure (if any) to the tray window, OR alternatively
 // maximize and focus the call window.
 ipcMain.handle('call-join-update', (e, joined) => {
-  console.log("update");
+  // console.log("update");
   if (!joined) {
-    paletteView.webContents.send('join-failure');
-    paletteWindow.show();
+    roomView.webContents.send('join-failure');
+    // paletteWindow.show();
     return;
   }
   // roomWindow.maximize();
   // setupTrayMenu(true);
   // roomWindow.show();
-  // roomWindow.focus();
+  roomWindow.focus();
 });
 
 // When a user leaves a call, this handler will update
@@ -562,7 +641,7 @@ ipcMain.handle('call-join-update', (e, joined) => {
 // join form once more)
 ipcMain.handle('left-call', () => {
   // setupTrayMenu(false);
-  paletteView.webContents.send('left-call');
+  roomView.webContents.send('left-call');
   // roomWindow.hide();
 });
 
@@ -571,7 +650,7 @@ ipcMain.handle('left-call', () => {
 // in the call window.
 ipcMain.handle('set-ignore-mouse-events', (e, ...args) => {
   // const win = BrowserWindow.fromWebContents(e.sender);
-  // roomWindow.setIgnoreMouseEvents(...args);
+  roomWindow.setIgnoreMouseEvents(...args);
 });
 
 ipcMain.handle('close-app', () => {
@@ -597,6 +676,10 @@ ipcMain.handle('request-sync', (e, args) => {
 
 });
 
+ipcMain.handle('toggle-self', (e, args) => {
+  // createTileWindow();
+});
+
 ipcMain.handle('request-presets', (e, args) => {
   // webstratesView.webContents.executeJavaScript("openSettings();");
   // webstratesView.webContents.executeJavaScript("setupRoomPreset(6);");
@@ -605,6 +688,7 @@ ipcMain.handle('request-edit', (e, args) => {
   webstratesView.webContents.executeJavaScript("toggleEdit();");
 });
 ipcMain.handle('refresh-page', (e, args) => {
+  console.log("resfsdf");
   webstratesView.webContents.reload();
 });
 ipcMain.handle('page-back', (e, args) => {
@@ -632,7 +716,8 @@ ipcMain.handle('page-dev', (e, args) => {
 });
 ipcMain.handle('send-input-event', (e, inputEvent) => {
   if (inputEvent.type != 'mouseMove') console.log(inputEvent);
-  webstratesView.webContents.focus();
+  
+  // webstratesView.webContents.focus();
   webstratesView.webContents.sendInputEvent(inputEvent);
 });
 

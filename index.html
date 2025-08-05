@@ -5,11 +5,12 @@
   <meta charset="UTF-8" />
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self' 'unsafe-inline'; frame-src 'self' http://localhost:7007 https://videoplayground.xyz https://demo.webstrates.net https://my.webstrates.net; script-src 'self' 'blob' https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
+    content="default-src 'self' 'unsafe-inline'; frame-src 'self' http://localhost:7007 https://videoplayground.xyz https://demo.webstrates.net https://my.webstrates.net; script-src 'self' https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ https://unpkg.com/@daily-co/daily-js https://*.daily.co https://cdn.jsdelivr.net/npm/@mediapipe/; connect-src https://*.daily.co https://*.pluot.blue https://cdn.jsdelivr.net/npm/@mediapipe/ wss:; worker-src 'self' blob:; style-src-elem 'self' https://fonts.googleapis.com/css2; font-src 'self' https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2 https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2 https://*.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <link href="./styles.css" rel="stylesheet" />
   <link href="./settingsStyles.css" rel="stylesheet" />
-  <title>Daily Call Overlay</title>
+  <link href="./paletteStyles.css" rel="stylesheet" />
+  <title>Video Playground Overlay</title>
 </head>
 
 <body>
@@ -20,35 +21,63 @@
     <!-- <iframe id="webstrates" src="https://videoplayground.xyz/frontpage/" class="clickable"></iframe> -->
     <div id="tiles"></div>
 
-    <div id="callControls" class="controls controls-on clickable draggable">
+    <!-- <div id="callControls" class="controls controls-on clickable draggable">
       <button id="toggleCam"></button>
       <button id="toggleMic"></button>
       <h3 id="modeHeader">MODE</h3>
-      <button id="modeBtn" class="settings-button">0</button>
       
-      <!-- <button id="toggleBlur" class="blur-off">BLUR</button> -->
+      
+      <button id="toggleBlur" class="blur-off">BLUR</button>
       <button id="leave" id="settings-button">Leave Call</button>
-    </div>
+    </div> -->
 
-    <div id="mainControls" class="controls clickable ">
+    <!-- <div id="mainControls" class="controls clickable ">
       <button id="syncBtn" class="settings-button">SYNC</button>
       <button id="presetsBtn" class="settings-button">PRESETS</button>
       <button id="editBtn" class="settings-button">EDIT</button>
       <button id="refreshBtn" class="settings-button">REFRESH</button>
+    </div> -->
+
+    <div id="paletteControls" class="clickable controls-on">
+      <div id="callControlsPalette" class="bar clickable controls-on entry">
+        <h1>CALL</h1>
+        <button id="toggleSeeMyself" class="settings-button">See Myself</button>
+        <button id="toggleClickableTiles" class="settings-button">Clickable Tiles</button>
+        <button id="modeBtn" class="settings-button">0</button>
+        <!-- <button id="toggleSelfTile">Toggle Self Tile</button> -->
+        <div id="entry">
+          <form id="enterCall">
+            <span class="formContainer">
+              <label>Name:</label>
+              <input type="text" id="participantName" value="admin" required />
+            </span>
+            <button type="submit">Join Call</button>
+          </form>
+        </div>
+
+        <div id="inCall">
+          <h3>Call in progress...</h3>
+          <button id="leave">Leave Call</button>
+          <button id="toggleCam"></button>
+          <button id="toggleMic"></button>
+        </div>
+      </div>
+
+      <div class="bar clickable controls-on">
+        <h1>NAVIGATION</h1>
+        <!-- <div class="search">
+          <input type="search" placeholder="search..." />
+        </div> -->
+        <button id="quitBtn" class="settings-button ">QUIT</button>
+        <button id="homeBtn" class="settings-button ">HOME</button>
+        <button id="backBtn" class="settings-button ">BACK</button>
+        <button id="forwardBtn" class="settings-button ">FWD</button>
+        <!-- <button id="refreshBtn" class="settings-button clickable">REFRESH</button> -->
+        <!-- <button id="devBtn" class="settings-button clickable">DEV</button> -->
+      </div>
     </div>
-
-    <!-- <div id="roomControls" class="controls clickable controls-on draggable">
-      <button id="startButton" class="button">Start</button>
-      <button id="stopButton" class="button">Stop</button>
-    </div> -->
-
-    <!-- <div id="avatarControls" class="controls clickable controls-on draggable">
-
-    </div> -->
   </div>
 
-
-  </div>
   <!-- You can also require other files to run in this process -->
   <script src="https://unpkg.com/@daily-co/daily-js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
@@ -62,6 +91,7 @@
   <script src="./renderer/call/daily.js" type="module"></script>
   <script src="./renderer/call/drag.js" type="module"></script>
   <script src="./renderer/space/room.js" type="module"></script>
+  <!-- <script src="./renderer/tray/palette.js" type="module"></script> -->
 </body>
 
 </html>
