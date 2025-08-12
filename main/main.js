@@ -44,7 +44,7 @@ const path = require('path');
 const devMode = app.commandLine.hasSwitch('dev');
 app.commandLine.appendSwitch('disable-site-isolation-trials');
 
-const webstratesURL = 'https://videoplayground.xyz/fat-frog-72/';
+const webstratesURL = 'https://videoplayground.xyz/old-fireant-73/';
 // const ll = require('leader-line');
 
 let roomWindow = null;
