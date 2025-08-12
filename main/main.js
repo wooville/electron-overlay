@@ -21,10 +21,26 @@ const {
 const path = require('path');
 // const positioner = require('electron-traywindow-positioner');
 // const contextMenu = require('electron-context-menu');
+// import contextMenu from 'electron-context-menu';
+// async function loadContextMenu() {
+//   const cm = await import('electron-context-menu');
+//   return cm;
+//   // Use myESMModule
+// }
 
-// contextMenu({
-//   showSaveImageAs: true
-// });
+(async () => {
+  const contextMenu = await import('electron-context-menu').then(contextMenu => contextMenu.default)
+  // console.log("ahhh");
+  contextMenu({
+    // showCopyImage: true,
+    showCopyImageAddress: true,
+    showCopyVideoAddress: true,
+    showSelectAll: false,
+    showCopyLink: true,
+    window: webstratesView
+  })
+})().catch(console.error)
+
 const devMode = app.commandLine.hasSwitch('dev');
 app.commandLine.appendSwitch('disable-site-isolation-trials');
 
@@ -38,6 +54,7 @@ let trayView = null;
 let tray = null;
 let mousePos = null;
 
+let mainWindow = null;
 let tileWindows = [];
 
 // app.on('ready', () => {
@@ -477,6 +494,9 @@ app.whenReady().then(() => {
   // createPaletteWindow();
   createWebstratesWindow();
   setupShortcuts();
+  // const contextMenu = loadContextMenu().then();
+
+  // mainWindow = webstratesWindow;
 
   // createTrayWindow();
   // setupTray();

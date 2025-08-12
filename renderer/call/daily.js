@@ -218,6 +218,14 @@ function toggleClickableTiles() {
   // console.log(participants.length);
   // participants.forEach(function (participant) {
   tiles.classList.toggle("clickthrough");
+  if (tiles.classList.contains('clickthrough')) {
+    this.innerHTML = 'Video Drag Off'
+    this.style.backgroundColor = "black";
+  } else {
+    this.style = '';
+    this.innerHTML = "Video Drag On"
+  }
+
   // var handle = participant.querySelector(".resize-handle");
   // if (handle) handle.classList.toggle("clickthrough");
   // participant.classList.toggle("clickable");

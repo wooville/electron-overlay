@@ -27,9 +27,9 @@ const wrapperObserver = new MutationObserver(function (mutations) {
       case "attributes":
         switch (mutation.attributeName) {
           case "class":
-          //               handleMutationEdit(mutation);
-          handleMutationClickableTiles(mutation);
-          break;
+            //               handleMutationEdit(mutation);
+            handleMutationClickableTiles(mutation);
+            break;
         }
         break;
     }
@@ -172,13 +172,14 @@ function changeMode() {
 
       participant.style.left = "0px";
       participant.style.top = (parseInt(cs.height, 10) * count) + "px";
-    } else if (modeCount < 6) {
-      //mode2
-
-
-      participant.style.top = (count % 2 === 0) ? "0px" : (window.visualViewport.height - parseInt(cs.height, 10)) + "px";
-      participant.style.left = (window.visualViewport.width - parseInt(cs.width, 10)) + "px";
     }
+    // else if (modeCount < 6) {
+    //   //mode2
+
+
+    //   participant.style.top = (count % 2 === 0) ? "0px" : (window.visualViewport.height - parseInt(cs.height, 10)) + "px";
+    //   participant.style.left = (window.visualViewport.width - parseInt(cs.width, 10)) + "px";
+    // }
 
     // participant.style.left = fourCorners[(count+1)%3];
     console.log(participant.style.top + ", " + participant.style.left);
@@ -194,7 +195,7 @@ function changeMode() {
 
   });
 
-  modeBtn.innerHTML = (modeCount + 1) % 6;
+  modeBtn.innerHTML = (modeCount + 1) % 4;
 }
 
 function updateDraggable(participant) {
