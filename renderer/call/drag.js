@@ -56,6 +56,7 @@
 // }
 
 export default function setupDraggableElement(element) {
+  // console.log(element.className);
   var container = document.querySelector("#tiles");
   var handles = element.querySelectorAll(".resize-handle");
   var handle;
@@ -84,6 +85,8 @@ export default function setupDraggableElement(element) {
     y2: rect2.bottom - rect1.bottom
   };
 
+  var existingDrag = Draggable.get(element);
+  if (existingDrag) existingDrag.kill();
   Draggable.create(element, {
     bounds: container,
     type: "left,top",
@@ -91,6 +94,8 @@ export default function setupDraggableElement(element) {
     inertia: true,
   });
 
+  existingDrag = Draggable.get(handle);
+  if (existingDrag) existingDrag.kill();
   Draggable.create(handle, {
     bounds: container,
     type: "left,top",
@@ -126,7 +131,7 @@ export function refreshDraggableElement(element) {
   var h = parseInt(element.style.height, 10);
   if (isNaN(w)) w = 0;
   if (isNaN(h)) h = 0;
-  console.log(rect1.width + ' ' + w);
+  // console.log(rect1.width + ' ' + w);
   // TweenLite.set(element, { width: handle.x + rect1.width, height: handle.y + rect1.height });
   TweenLite.set(handle, { x: Math.max(rect1.width, w), y: Math.max(rect1.height, h) });
 }

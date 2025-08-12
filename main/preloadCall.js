@@ -6,9 +6,20 @@ window.addEventListener('DOMContentLoaded', () => {
   refreshClickableElements();
 });
 
-window.addEventListener('DOMNodeInserted', () => {
-  refreshClickableElements();
+const observer = new MutationObserver((mutationList) => {
+  mutationList
+    .filter((m) => m.type === 'childList')
+    .forEach((mutation) => {
+      refreshClickableElements();
+    });
 });
+
+// Start observing the target for added/removed nodes
+observer.observe(window.document, { childList: true, subtree: true });
+
+// window.addEventListener('DOMNodeInserted', () => {
+//   refreshClickableElements();
+// });
 
 // refreshClickableElements finds all DOM elements which can be clicked
 // and adds listeners to detect mouse enter and leave events. When the user
@@ -17,16 +28,26 @@ window.addEventListener('DOMNodeInserted', () => {
 // we'll set the app to ignore mouse clicks once more (to let the user
 // interact with background applications)
 function refreshClickableElements() {
-  const clickableElements = document.getElementsByClassName('clickable');
+  const clickableElements = document.querySelectorAll('.clickable');
+  const tiles = document.querySelector("#tiles");
   const listeningAttr = 'listeningForMouse';
   for (let i = 0; i < clickableElements.length; i += 1) {
     const ele = clickableElements[i];
     // If the listeners are already set up for this element, skip it.
+
     if (ele.getAttribute(listeningAttr)) {
       continue;
     }
     ele.addEventListener('mouseenter', () => {
-      ipcRenderer.invoke('set-ignore-mouse-events', false);
+      if (tiles.classList.contains("clickthrough") && (ele.classList.contains('participant') || ele.classList.contains('tile') || ele.classList.contains('fit') || ele.classList.contains('resize-handle'))) {
+        ipcRenderer.invoke('set-ignore-mouse-events', true, { forward: true })
+        console.log("ign");
+      } else {
+        ipcRenderer.invoke('set-ignore-mouse-events', false);
+        console.log(ele.classList);
+      }
+      // console.log(tiles.classList);
+      // ipcRenderer.invoke('focus-call', true);
     });
     ele.addEventListener('mouseleave', () => {
       ipcRenderer.invoke('set-ignore-mouse-events', true, { forward: true });

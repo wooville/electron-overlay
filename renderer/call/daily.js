@@ -214,10 +214,12 @@ function toggleSeeMyself() {
 }
 
 function toggleClickableTiles() {
-  const participants = document.querySelectorAll(".participant");
+  const tiles = document.querySelector("#tiles");
   // console.log(participants.length);
-  participants.forEach(function (participant) {
-    participant.classList.toggle("clickthrough");
-    participant.classList.toggle("clickable");
-  });
+  // participants.forEach(function (participant) {
+  tiles.classList.toggle("clickthrough");
+  // var handle = participant.querySelector(".resize-handle");
+  // if (handle) handle.classList.toggle("clickthrough");
+  // participant.classList.toggle("clickable");
+  // });
 }

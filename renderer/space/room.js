@@ -1,5 +1,6 @@
 import { addOrUpdateTile, hideAllTiles } from '../call/tile.js';
-import { refreshDraggableElement } from '../call/drag.js'
+import setupDraggableElement, { refreshDraggableElement } from '../call/drag.js'
+// import { ipcRenderer } from 'electron';
 
 const wrapper = document.getElementById('wrapper');
 // const webstrates = document.getElementById('webstrates');
@@ -21,14 +22,14 @@ const wrapperObserver = new MutationObserver(function (mutations) {
     switch (mutation.type) {
       case "childList":
         //setup new nodes
-        //   handleMutationNodeAddRemove(mutation);
+        // refreshClickableElements();
         break;
       case "attributes":
         switch (mutation.attributeName) {
           case "class":
-            //               handleMutationEdit(mutation);
-            handleMutationClickableTiles(mutation);
-            break;
+          //               handleMutationEdit(mutation);
+          handleMutationClickableTiles(mutation);
+          break;
         }
         break;
     }
@@ -38,12 +39,26 @@ const wrapperObserver = new MutationObserver(function (mutations) {
 // const paletteControls = document.getElementById('paletteControls');
 // refreshDraggableElement(paletteControls);
 
-//   function handleMutationNodeAddRemove(mutation){
-//     mutation.addedNodes.forEach(function(newElement) {
-//       setupElement(newElement);
-//       setupMediaPlaybackSync(newElement);
+// function refreshClickableElements() {
+//   const clickableElements = document.querySelectorAll('.clickable');
+//   const listeningAttr = 'listeningForMouse';
+//   for (let i = 0; i < clickableElements.length; i += 1) {
+//     const ele = clickableElements[i];
+//     // If the listeners are already set up for this element, skip it.
+//     if (ele.getAttribute(listeningAttr)) {
+//       continue;
+//     }
+//     ele.addEventListener('mouseenter', () => {
+//       ipcRenderer.invoke('set-ignore-mouse-events', false);
+//       console.log(ele);
+//       // ipcRenderer.invoke('focus-call', true);
 //     });
+//     ele.addEventListener('mouseleave', () => {
+//       ipcRenderer.invoke('set-ignore-mouse-events', true, { forward: true });
+//     });
+//     ele.setAttribute(listeningAttr, true);
 //   }
+// }
 
 //   function handleMutationEdit(mutation){
 //     if (mutation.oldValue.includes("edit") != mutation.target.className.includes("edit")) {
@@ -107,7 +122,7 @@ modeBtn.addEventListener(clickEvent, changeMode);
 // refreshBtn.addEventListener(clickEvent, refreshPage);
 // addOrUpdateTile(specialUserName, specialUserName, null, null, true);
 // addOrUpdateTile('specialUserName', 'specialUserName', null, null, false);
-hideAllTiles();
+// hideAllTiles();
 // window.open('https://google.com');
 // webstrate.webstrate.on("transcluded", function (webstrateId, clientId, user) {
 //     // The webstrate client in the iframe has now finished loading.
@@ -174,15 +189,18 @@ function changeMode() {
       duration: 1,
       ease: "power1.inOut",
       absolute: true,
-      // onComplete: myFunc,
+      onComplete: updateDraggable(participant)
     });
-
-    // Draggable.get(participant)?.update();
-    // refreshDraggableElement(participant);
 
   });
 
   modeBtn.innerHTML = (modeCount + 1) % 6;
+}
+
+function updateDraggable(participant) {
+  Draggable.get(participant)?.update();
+  setupDraggableElement(participant);
+  refreshDraggableElement(participant);
 }
 
 function requestSync() {
