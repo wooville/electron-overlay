@@ -28,18 +28,18 @@ const path = require('path');
 //   // Use myESMModule
 // }
 
-(async () => {
-  const contextMenu = await import('electron-context-menu').then(contextMenu => contextMenu.default)
-  // console.log("ahhh");
-  contextMenu({
-    // showCopyImage: true,
-    showCopyImageAddress: true,
-    showCopyVideoAddress: true,
-    showSelectAll: false,
-    showCopyLink: true,
-    window: webstratesView
-  })
-})().catch(console.error)
+// (async () => {
+//   const contextMenu = await import('electron-context-menu').then(contextMenu => contextMenu.default)
+//   // console.log("ahhh");
+//   contextMenu({
+//     // showCopyImage: true,
+//     showCopyImageAddress: true,
+//     showCopyVideoAddress: true,
+//     showSelectAll: false,
+//     showCopyLink: true,
+//     window: webstratesView
+//   })
+// })().catch(console.error)
 
 const devMode = app.commandLine.hasSwitch('dev');
 app.commandLine.appendSwitch('disable-site-isolation-trials');
@@ -492,7 +492,7 @@ function createRoomWindow() {
 app.whenReady().then(() => {
   createRoomWindow();
   // createPaletteWindow();
-  createWebstratesWindow();
+  // createWebstratesWindow();
   setupShortcuts();
   // const contextMenu = loadContextMenu().then();
 
