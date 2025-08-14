@@ -492,7 +492,7 @@ function createRoomWindow() {
 app.whenReady().then(() => {
   createRoomWindow();
   // createPaletteWindow();
-  createWebstratesWindow();
+  // createWebstratesWindow();
   setupShortcuts();
   // const contextMenu = loadContextMenu().then();
 

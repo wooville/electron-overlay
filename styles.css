@@ -154,6 +154,10 @@ body {
   border: 0.5px solid rgba(255, 217, 0, 0.836);
 }
 
+#tiles.hideself .participant {
+  display: none;
+}
+
 #testboxes {
   position: relative;
   padding-top: 60px;

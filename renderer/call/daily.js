@@ -206,11 +206,18 @@ function updateLocal(p) {
 }
 
 function toggleSeeMyself() {
-  const participants = document.querySelectorAll(".participant");
-  console.log(participants.length);
-  participants.forEach(function (participant) {
-    participant.classList.toggle("hide");
-  });
+  const tiles = document.querySelector("#tiles");
+  // console.log(participants.length);
+  // participants.forEach(function (participant) {
+  tiles.classList.toggle("hideself");
+  if (tiles.classList.contains('hideself')) {
+    this.innerHTML = 'See Myself Off'
+    this.style.backgroundColor = "black";
+  } else {
+    this.style = '';
+    this.innerHTML = "See Myself On"
+  }
+  // });
 }
 
 function toggleClickableTiles() {
