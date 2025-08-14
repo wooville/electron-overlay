@@ -154,7 +154,7 @@ body {
   border: 0.5px solid rgba(255, 217, 0, 0.836);
 }
 
-#tiles.hideself .participant {
+#tiles.hideself .localP {
   display: none;
 }
 

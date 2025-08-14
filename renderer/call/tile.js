@@ -38,6 +38,7 @@ export function addOrUpdateTile(
     videoTag = tags.video;
     audioTag = tags.audio;
     if (isLocal) {
+      participant.classList.add("localP");
       audioTag.volume = 0;
       // setupParticipantCursor(participant);
     }
