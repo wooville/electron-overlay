@@ -14,6 +14,7 @@ body {
 
 #wrapper {
   position: absolute;
+  /* overflow: auto; */
   height: 100%;
   width: 100%;
   /* display: flex; */
@@ -102,7 +103,7 @@ body {
   pointer-events: none;
 } */
 
-.participant:hover {
+#tiles.clickthrough .participant:hover {
   cursor: auto;
   /* pointer-events: all; */
   opacity: .2;
@@ -124,6 +125,7 @@ body {
 }
 
 #tiles {
+  position: absolute;
   /* pointer-events: none; */
   height: 100%;
   width: 100%;

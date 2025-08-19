@@ -41,10 +41,10 @@ function refreshClickableElements() {
     ele.addEventListener('mouseenter', () => {
       if (tiles.classList.contains("clickthrough") && (ele.classList.contains('participant') || ele.classList.contains('tile') || ele.classList.contains('fit') || ele.classList.contains('resize-handle'))) {
         ipcRenderer.invoke('set-ignore-mouse-events', true, { forward: true })
-        console.log("ign");
+        // console.log("ign");
       } else {
         ipcRenderer.invoke('set-ignore-mouse-events', false);
-        console.log(ele.classList);
+        // console.log(ele.classList);
       }
       // console.log(tiles.classList);
       // ipcRenderer.invoke('focus-call', true);

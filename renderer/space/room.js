@@ -36,7 +36,8 @@ const wrapperObserver = new MutationObserver(function (mutations) {
   });
 });
 
-// const paletteControls = document.getElementById('paletteControls');
+const paletteControls = document.getElementById('paletteControls');
+setupDraggableElement(paletteControls);
 // refreshDraggableElement(paletteControls);
 
 // function refreshClickableElements() {

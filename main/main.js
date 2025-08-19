@@ -66,17 +66,17 @@ function createPaletteWindow() {
   // Create the window that opens on app start
   // and tray click
   paletteWindow = new BaseWindow({
-    // parent: roomWindow,
-    title: 'Palette Window',
+    parent: roomWindow,
+    title: 'Chat Window',
     // webPreferences: {
     //   preload: path.join(__dirname, 'preloadTray.js'),
     // },
     width: 480,
     height: 800,
     show: true,
-    // fullscreenable: false,
+    fullscreenable: false,
     // frame: false,
-    // autoHideMenuBar: true,
+    autoHideMenuBar: true,
     setVisibleOnAllWorkspaces: true,
     // transparent: true,
     // skipTaskbar: true,
@@ -92,7 +92,11 @@ function createPaletteWindow() {
       preload: path.join(__dirname, 'preloadPalette.js'),
     }
   });
-  paletteView.webContents.loadFile('palette.html');
+  const chatURL = 'https://videoplayground.xyz/afraid-rattlesnake-6/';
+  // const chatURL = 'https://openclipart.org/';
+  
+  // paletteView.webContents.loadFile('palette.html');
+  paletteView.webContents.loadURL(chatURL);
   paletteView.setBounds({ x: 0, y: 0, width: paletteWindow.getBounds().width, height: paletteWindow.getBounds().height })
   paletteWindow.contentView.addChildView(paletteView);
 
@@ -490,10 +494,12 @@ function createRoomWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createRoomWindow();
-  // createPaletteWindow();
+  
   createWebstratesWindow();
+  createRoomWindow();
+  createPaletteWindow();
   setupShortcuts();
+  
   // const contextMenu = loadContextMenu().then();
 
   // mainWindow = webstratesWindow;

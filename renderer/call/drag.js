@@ -92,33 +92,50 @@ export default function setupDraggableElement(element) {
     type: "left,top",
     autoScroll: 1,
     inertia: true,
-  });
-
-  existingDrag = Draggable.get(handle);
-  if (existingDrag) existingDrag.kill();
-  Draggable.create(handle, {
-    bounds: container,
-    type: "left,top",
-    autoScroll: 1,
-    onPress: function (e) {
-      e.stopPropagation();
-    },
     onDrag: function () {
       var w = parseInt(element.style.width, 10);
       var h = parseInt(element.style.height, 10);
       if (isNaN(w)) w = 0;
       if (isNaN(h)) h = 0;
-      TweenLite.set(element, { width: this.x + rect1.width, height: this.y + rect1.height });
+      console.log(w + " " + h + " ..... " + rect1.width + " " + rect1.height);
     },
-    liveSnap: {
-      x: function (x) {
-        return clamp(x, -offset.x1, x + offset.x2);
-      },
-      y: function (y) {
-        return clamp(y, -offset.y1, y + offset.y2);
-      }
-    }
+    // onDragEnd: function () {
+    //   rect1 = element.getBoundingClientRect();
+    // },
   });
+
+  if (element.id != "paletteControls") {
+    existingDrag = Draggable.get(handle);
+    if (existingDrag) existingDrag.kill();
+    Draggable.create(handle, {
+      bounds: container,
+      type: "left,top",
+      autoScroll: 1,
+      onPress: function (e) {
+        e.stopPropagation();
+      },
+      onDrag: function () {
+        // var w = parseInt(element.style.width, 10);
+        // var h = parseInt(element.style.height, 10);
+        // if (isNaN(w)) w = 0;
+        // if (isNaN(h)) h = 0;
+        console.log(rect1.width + " " + rect1.height);
+        TweenLite.set(element, { width: this.x + rect1.width, height: this.y + rect1.height });
+      },
+      // onDragEnd: function () {
+      //   rect1 = element.getBoundingClientRect();
+      // },
+      liveSnap: {
+        x: function (x) {
+          return clamp(x, -offset.x1, x + offset.x2);
+        },
+        y: function (y) {
+          return clamp(y, -offset.y1, y + offset.y2);
+        }
+      }
+    });
+  }
+
 }
 
 export function refreshDraggableElement(element) {
