@@ -72,7 +72,7 @@ function createPaletteWindow() {
     //   preload: path.join(__dirname, 'preloadTray.js'),
     // },
     width: 480,
-    height: 800,
+    height: 440,
     show: true,
     fullscreenable: false,
     // frame: false,
@@ -94,7 +94,7 @@ function createPaletteWindow() {
   });
   const chatURL = 'https://videoplayground.xyz/afraid-rattlesnake-6/';
   // const chatURL = 'https://openclipart.org/';
-  
+
   // paletteView.webContents.loadFile('palette.html');
   paletteView.webContents.loadURL(chatURL);
   paletteView.setBounds({ x: 0, y: 0, width: paletteWindow.getBounds().width, height: paletteWindow.getBounds().height })
@@ -494,12 +494,12 @@ function createRoomWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  
+
   createWebstratesWindow();
   createRoomWindow();
   createPaletteWindow();
   setupShortcuts();
-  
+
   // const contextMenu = loadContextMenu().then();
 
   // mainWindow = webstratesWindow;
