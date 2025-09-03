@@ -495,7 +495,7 @@ function createRoomWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
-  createWebstratesWindow();
+  // createWebstratesWindow();
   createRoomWindow();
   createPaletteWindow();
   setupShortcuts();
